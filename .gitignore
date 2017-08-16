@@ -1,0 +1,3 @@
+/build/docs/
+/build/reports/
+/tests/unit/ORM/data/sqlite.test.db
