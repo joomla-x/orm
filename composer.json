@@ -32,7 +32,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Joomla\\": "libraries/incubator/"
+            "Joomla\\ORM\\": "src/"
         }
     },
     "autoload-dev": {
