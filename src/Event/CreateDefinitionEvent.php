@@ -20,36 +20,36 @@ use Joomla\ORM\Entity\EntityBuilder;
  */
 class CreateDefinitionEvent extends Event
 {
-	/**
-	 * DefinitionCreatedEvent constructor.
-	 *
-	 * @param   string        $entityName The name of the entity
-	 * @param   EntityBuilder $builder    The builder
-	 */
-	public function __construct($entityName, EntityBuilder $builder)
-	{
-		parent::__construct(
-			'onCreateDefinition',
-			[
-				'className' => $entityName,
-				'builder'   => $builder
-			]
-		);
-	}
+    /**
+     * DefinitionCreatedEvent constructor.
+     *
+     * @param   string        $entityName The name of the entity
+     * @param   EntityBuilder $builder    The builder
+     */
+    public function __construct($entityName, EntityBuilder $builder)
+    {
+        parent::__construct(
+            'onCreateDefinition',
+            [
+                'className' => $entityName,
+                'builder'   => $builder,
+            ]
+        );
+    }
 
-	/**
-	 * @return   string
-	 */
-	public function getEntityName()
-	{
-		return $this->getArgument('className');
-	}
+    /**
+     * @return   string
+     */
+    public function getEntityName()
+    {
+        return $this->getArgument('className');
+    }
 
-	/**
-	 * @return   EntityBuilder
-	 */
-	public function getEntityBuilder()
-	{
-		return $this->getArgument('builder');
-	}
+    /**
+     * @return   EntityBuilder
+     */
+    public function getEntityBuilder()
+    {
+        return $this->getArgument('builder');
+    }
 }

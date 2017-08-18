@@ -17,68 +17,66 @@ namespace Joomla\ORM\Definition\Parser;
  */
 class Field extends Element
 {
-	/** @var  string  The field name */
-	public $name = 'unknown';
+    /** @var  string  The field name */
+    public $name = 'unknown';
 
-	/** @var  string  The data type */
-	public $type;
+    /** @var  string  The data type */
+    public $type;
 
-	/** @var  string  field's role (i.e., special meaning) */
-	public $role = null;
+    /** @var  string  field's role (i.e., special meaning) */
+    public $role = null;
 
-	/** @var  string  The input control */
-	public $input;
+    /** @var  string  The input control */
+    public $input;
 
-	/** @var  array  A list of validation rules */
-	public $validation = [];
+    /** @var  array  A list of validation rules */
+    public $validation = [];
 
-	/** @var  array  A list of selectable values */
-	public $options = [];
+    /** @var  array  A list of selectable values */
+    public $options = [];
 
-	/** @var  mixed  The value of the field */
-	public $value;
+    /** @var  mixed  The value of the field */
+    public $value;
 
-	/** @var  string  The label */
-	public $label;
+    /** @var  string  The label */
+    public $label;
 
-	/** @var  string  The description */
-	public $description;
+    /** @var  string  The description */
+    public $description;
 
-	/** @var  string  The hint */
-	public $hint;
+    /** @var  string  The hint */
+    public $hint;
 
-	/** @var  mixed  The default value */
-	public $default;
+    /** @var  mixed  The default value */
+    public $default;
 
-	/**
-	 * Set the validation rules
-	 *
-	 * @param   array $values The validation rules
-	 *
-	 * @return  void
-	 */
-	protected function setValidation($values)
-	{
-		foreach ($values as $validation)
-		{
-			$value = isset($validation->value) ? $validation->value : true;
+    /**
+     * Set the validation rules
+     *
+     * @param   array $values The validation rules
+     *
+     * @return  void
+     */
+    protected function setValidation($values)
+    {
+        foreach ($values as $validation) {
+            $value = isset($validation->value) ? $validation->value : true;
 
-			$this->validation[$validation->rule] = $value;
-		}
-	}
+            $this->validation[$validation->rule] = $value;
+        }
+    }
 
-	/**
-	 * Set the options
-	 *
-	 * @param   array $values The options
-	 *
-	 * @return  void
-	 */
-	protected function setOption($values)
-	{
-		foreach ($values as $option)
-		{
-			$this->options[$option->value] = $option->label;
-		}
-	}
+    /**
+     * Set the options
+     *
+     * @param   array $values The options
+     *
+     * @return  void
+     */
+    protected function setOption($values)
+    {
+        foreach ($values as $option) {
+            $this->options[$option->value] = $option->label;
+        }
+    }
 }

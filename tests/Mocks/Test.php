@@ -10,6 +10,6 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Test
 {
-	public $id;
-	public $foo;
+    public $id;
+    public $foo;
 }

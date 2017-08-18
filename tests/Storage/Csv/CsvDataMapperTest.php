@@ -14,26 +14,27 @@ use Joomla\ORM\Tests\Mocks\Article;
 
 class CsvDataMapperTest extends DataMapperTestCases
 {
-	/** @var  CsvDataMapper */
-	protected $dataMapper;
+    /** @var  CsvDataMapper */
+    protected $dataMapper;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject|CsvDataGateway */
-	protected $connection;
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|CsvDataGateway */
+    protected $connection;
 
-	public function setUp()
-	{
-		$this->connection = $this->createMock(CsvDataGateway::class);
+    public function setUp()
+    {
+        $this->connection = $this->createMock(CsvDataGateway::class);
 
-		$this->connection
-			->expects($this->any())
-			->method('getAll')
-			->with('articles')
-			->willReturn(
-				array_values($this->articles)
-			);
+        $this->connection
+            ->expects($this->any())
+            ->method('getAll')
+            ->with('articles')
+            ->willReturn(
+                array_values($this->articles)
+            )
+        ;
 
-		parent::setUp();
+        parent::setUp();
 
-		$this->dataMapper = new CsvDataMapper($this->connection, Article::class, 'articles', $this->entityRegistry);
-	}
+        $this->dataMapper = new CsvDataMapper($this->connection, Article::class, 'articles', $this->entityRegistry);
+    }
 }

@@ -20,22 +20,22 @@ use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
  */
 interface ParserInterface
 {
-	/**
-	 * Open the description of the entity
-	 *
-	 * @param   string $descriptionFile The file with the entity description
-	 *
-	 * @return mixed
-	 */
-	public function open($descriptionFile);
+    /**
+     * Open the description of the entity
+     *
+     * @param   string $descriptionFile The file with the entity description
+     *
+     * @return mixed
+     */
+    public function open($descriptionFile);
 
-	/**
-	 * Parse the entity definition
-	 *
-	 * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
-	 * @param   LocatorInterface $locator   The description file locator for related entities
-	 *
-	 * @return  EntityStructure
-	 */
-	public function parse($callbacks, LocatorInterface $locator);
+    /**
+     * Parse the entity definition
+     *
+     * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
+     * @param   LocatorInterface $locator   The description file locator for related entities
+     *
+     * @return  EntityStructure
+     */
+    public function parse($callbacks, LocatorInterface $locator);
 }

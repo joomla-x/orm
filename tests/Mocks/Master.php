@@ -10,10 +10,10 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Master
 {
-	public $id;
-	public $title;
-	public $fieldA;
-	public $fieldB;
-	public $fieldC;
-	public $parentId = 0;
+    public $id;
+    public $title;
+    public $fieldA;
+    public $fieldB;
+    public $fieldC;
+    public $parentId = 0;
 }

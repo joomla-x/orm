@@ -16,53 +16,59 @@ use Joomla\ORM\Tests\Mocks\Article;
 
 class DoctrineDataMapperTest extends DataMapperTestCases
 {
-	/** @var  DoctrineDataMapper */
-	protected $dataMapper;
+    /** @var  DoctrineDataMapper */
+    protected $dataMapper;
 
-	/** @var  \PHPUnit_Framework_MockObject_MockObject|Connection */
-	protected $connection;
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|Connection */
+    protected $connection;
 
-	public function setUp()
-	{
-		$statement = $this->createMock(Statement::class);
+    public function setUp()
+    {
+        $statement = $this->createMock(Statement::class);
 
-		$statement
-			->expects($this->any())
-			->method('fetchAll')
-			->willReturn(
-				array_values($this->articles)
-			);
+        $statement
+            ->expects($this->any())
+            ->method('fetchAll')
+            ->willReturn(
+                array_values($this->articles)
+            )
+        ;
 
-		$queryBuilder = $this->createMock(QueryBuilder::class);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
 
-		$queryBuilder
-			->expects($this->any())
-			->method('select')
-			->willReturnSelf();
+        $queryBuilder
+            ->expects($this->any())
+            ->method('select')
+            ->willReturnSelf()
+        ;
 
-		$queryBuilder
-			->expects($this->any())
-			->method('setMaxResults')
-			->willReturnSelf();
+        $queryBuilder
+            ->expects($this->any())
+            ->method('setMaxResults')
+            ->willReturnSelf()
+        ;
 
-		$queryBuilder
-			->expects($this->any())
-			->method('execute')
-			->willReturn(
-				$statement
-			);
+        $queryBuilder
+            ->expects($this->any())
+            ->method('execute')
+            ->willReturn(
+                $statement
+            )
+        ;
 
-		$this->connection = $this->createMock(Connection::class);
+        $this->connection = $this->createMock(Connection::class);
 
-		$this->connection
-			->expects($this->any())
-			->method('createQueryBuilder')
-			->willReturn(
-				$queryBuilder
-			);
+        $this->connection
+            ->expects($this->any())
+            ->method('createQueryBuilder')
+            ->willReturn(
+                $queryBuilder
+            )
+        ;
 
-		parent::setUp();
+        parent::setUp();
 
-		$this->dataMapper = new DoctrineDataMapper($this->connection, Article::class, 'articles', $this->entityRegistry);
-	}
+        $this->dataMapper = new DoctrineDataMapper($this->connection, Article::class, 'articles',
+            $this->entityRegistry);
+    }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\ORM\Tests\Mocks\Detail">
 
     <storage>
@@ -8,15 +8,33 @@
     </storage>
 
     <fields>
-        <field name="id" type="id"/>
-        <field name="field_1" type="text" default=""/>
-        <field name="field_2" type="text" default=""/>
+        <field
+            name="id"
+            type="id"
+        />
+        <field
+            name="field_1"
+            type="text"
+            default=""
+        />
+        <field
+            name="field_2"
+            type="text"
+            default=""
+        />
+        <field
+            name="master_id"
+            type="foreignkey"
+            entity="Master"
+        >
+        </field>
     </fields>
 
     <relations>
         <belongsTo
-            name="master_id"
+            name="master"
             entity="Master"
+            reference="master_id"
         />
         <hasOne
             name="extra"

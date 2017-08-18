@@ -10,13 +10,13 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Tag
 {
-	public $id;
-	public $tag;
-	public $description;
+    public $id;
+    public $tag;
+    public $description;
 
-	public function __construct($tag = '', $description = '')
-	{
-		$this->tag         = $tag;
-		$this->description = $description;
-	}
+    public function __construct($tag = '', $description = '')
+    {
+        $this->tag         = $tag;
+        $this->description = $description;
+    }
 }

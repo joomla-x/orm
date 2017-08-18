@@ -20,70 +20,61 @@ use Joomla\ORM\UnitOfWork\TransactionInterface;
  */
 class CsvTransactor implements TransactionInterface
 {
-	/** @var CsvDataGateway */
-	private $gateway;
+    /** @var CsvDataGateway */
+    private $gateway;
 
-	/**
-	 * CsvTransactor constructor.
-	 *
-	 * @param   CsvDataGateway  $gateway  The data gateway
-	 */
-	public function __construct(CsvDataGateway $gateway)
-	{
-		$this->gateway = $gateway;
-	}
+    /**
+     * CsvTransactor constructor.
+     *
+     * @param   CsvDataGateway $gateway The data gateway
+     */
+    public function __construct(CsvDataGateway $gateway)
+    {
+        $this->gateway = $gateway;
+    }
 
-	/**
-	 * Initiates a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function beginTransaction()
-	{
-		try
-		{
-			$this->gateway->beginTransaction();
-		}
-		catch (\RuntimeException $e)
-		{
-			throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Initiates a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function beginTransaction()
+    {
+        try {
+            $this->gateway->beginTransaction();
+        } catch (\RuntimeException $e) {
+            throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 
-	/**
-	 * Commits a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function commit()
-	{
-		try
-		{
-			$this->gateway->commit();
-		}
-		catch (\RuntimeException $e)
-		{
-			throw new OrmException("Unable to commit changes.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Commits a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function commit()
+    {
+        try {
+            $this->gateway->commit();
+        } catch (\RuntimeException $e) {
+            throw new OrmException("Unable to commit changes.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 
-	/**
-	 * Rolls back the current transaction, as initiated by beginTransaction().
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function rollBack()
-	{
-		try
-		{
-			$this->gateway->rollBack();
-		}
-		catch (\RuntimeException $e)
-		{
-			throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Rolls back the current transaction, as initiated by beginTransaction().
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function rollBack()
+    {
+        try {
+            $this->gateway->rollBack();
+        } catch (\RuntimeException $e) {
+            throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 }

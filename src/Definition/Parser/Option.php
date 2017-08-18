@@ -17,26 +17,24 @@ namespace Joomla\ORM\Definition\Parser;
  */
 class Option extends Element
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   array $attributes The data to populate the element with
-	 */
-	public function __construct($attributes)
-	{
-		if (!isset($attributes['#text']))
-		{
-			$attributes['#text'] = 'unknown';
-			#throw new UnexpectedValueException("Undefined index: #text in " . print_r($attributes, true));
-		}
-		if (!isset($attributes['value']))
-		{
-			$attributes['value'] = 'unknown';
-		}
+    /**
+     * Constructor
+     *
+     * @param   array $attributes The data to populate the element with
+     */
+    public function __construct($attributes)
+    {
+        if (!isset($attributes['#text'])) {
+            $attributes['#text'] = 'unknown';
+            #throw new UnexpectedValueException("Undefined index: #text in " . print_r($attributes, true));
+        }
+        if (!isset($attributes['value'])) {
+            $attributes['value'] = 'unknown';
+        }
 
-		$attributes['label'] = $attributes['#text'];
-		unset($attributes['#text']);
+        $attributes['label'] = $attributes['#text'];
+        unset($attributes['#text']);
 
-		parent::__construct($attributes);
-	}
+        parent::__construct($attributes);
+    }
 }

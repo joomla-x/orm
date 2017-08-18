@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\ORM\Tests\Mocks\Article">
 
     <storage>
@@ -8,38 +8,51 @@
     </storage>
 
     <fields>
-        <field name="id"
-               type="id"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               default="null"
+        <field
+            name="id"
+            type="id"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            default="null"
         >
             <validation rule="positive"/>
             <validation rule="integer"/>
         </field>
 
-        <field name="title"
-               type="title"
-               label="JGLOBAL_TITLE"
+        <field
+            name="parent_id"
+            type="foreignkey"
+            entity="Article"
+        >
+        </field>
+
+        <field
+            name="title"
+            type="title"
+            label="JGLOBAL_TITLE"
         >
             <validation rule="maxlen" value="64"/>
         </field>
 
-        <field name="teaser"
-               type="richtext"
+        <field
+            name="teaser"
+            type="richtext"
         />
 
-        <field name="body"
-               type="richtext"
+        <field
+            name="body"
+            type="richtext"
         />
 
-        <field name="author"
-               type="text"
-               default=""
+        <field
+            name="author"
+            type="text"
+            default=""
         />
 
-        <field name="license"
-               type="text"
+        <field
+            name="license"
+            type="text"
         >
             <validation rule="regex" value="copy(right|left)"/>
         </field>
@@ -47,12 +60,15 @@
     </fields>
 
     <relations>
-        <belongsTo name="parent_id"
-                   entity="Article"
-        />
-        <hasMany name="children"
-                 entity="Article"
-                 reference="parent_id"
+        <belongsTo
+            name="parent"
+            entity="Article"
+            reference="parent_id"/>
+
+        <hasMany
+            name="children"
+            entity="Article"
+            reference="parent_id"
         />
     </relations>
 

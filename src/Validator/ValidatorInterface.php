@@ -19,21 +19,21 @@ use Joomla\ORM\Entity\EntityInterface;
  */
 interface ValidatorInterface
 {
-	/**
-	 * Validate an entity.
-	 *
-	 * @param   EntityInterface $entity The entity to validate
-	 *
-	 * @return  boolean
-	 */
-	public function check(EntityInterface $entity);
+    /**
+     * Validate an entity.
+     *
+     * @param   EntityInterface $entity The entity to validate
+     *
+     * @return  boolean
+     */
+    public function check(EntityInterface $entity);
 
-	/**
-	 * Sanitise an entity.
-	 *
-	 * @param   EntityInterface $entity The entity to sanitise
-	 *
-	 * @return  boolean
-	 */
-	public function sanitise(EntityInterface $entity);
+    /**
+     * Sanitise an entity.
+     *
+     * @param   EntityInterface $entity The entity to sanitise
+     *
+     * @return  boolean
+     */
+    public function sanitise(EntityInterface $entity);
 }

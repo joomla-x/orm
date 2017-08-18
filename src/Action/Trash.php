@@ -10,14 +10,13 @@ namespace Joomla\ORM\Action;
 
 class Trash extends AbstractAction
 {
-	public function __invoke($entity)
-	{
-		$meta = $this->repository->getMeta();
+    public function __invoke($entity)
+    {
+        $meta = $this->repository->getMeta();
 
-		if (!empty($meta->fieldAliases['state']))
-		{
-			$property            = $meta->propertyName($meta->fieldAliases['state']);
-			$entity->{$property} = -2;
-		}
-	}
+        if (!empty($meta->fieldAliases['state'])) {
+            $property            = $meta->propertyName($meta->fieldAliases['state']);
+            $entity->{$property} = -2;
+        }
+    }
 }

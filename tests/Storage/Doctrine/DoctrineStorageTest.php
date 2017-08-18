@@ -1,4 +1,5 @@
 <?php
+
 namespace Joomla\ORM\Tests\Storage\Doctrine;
 
 use Doctrine\DBAL\DriverManager;
@@ -10,27 +11,27 @@ use Joomla\ORM\Tests\Storage\StorageTestCases;
 
 class DoctrineStorageTest extends StorageTestCases
 {
-	public function setUp()
-	{
-		$dataPath = realpath(__DIR__ . '/../..');
+    public function setUp()
+    {
+        $dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
+        $this->config = parse_ini_file($dataPath . '/data/entities.doctrine.ini', true);
 
-		$this->connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-		$this->transactor = new DoctrineTransactor($this->connection);
+        $this->connection = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
+        $this->transactor = new DoctrineTransactor($this->connection);
 
-		parent::setUp();
+        parent::setUp();
 
-		$dataMapper = new DoctrineDataMapper(
-			$this->connection,
-			Article::class,
-			'articles',
-			$this->entityRegistry
-		);
-		$this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
-	}
+        $dataMapper = new DoctrineDataMapper(
+            $this->connection,
+            Article::class,
+            'articles',
+            $this->entityRegistry
+        );
+        $this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
+    }
 
-	public function tearDown()
-	{
-	}
+    public function tearDown()
+    {
+    }
 }

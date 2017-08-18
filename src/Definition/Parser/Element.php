@@ -19,71 +19,67 @@ use Joomla\String\Normalise;
  */
 class Element
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   array $attributes The data to populate the element with
-	 */
-	public function __construct($attributes)
-	{
-		foreach ($attributes as $name => $value)
-		{
-			$method = 'set' . ucfirst($name);
+    /**
+     * Constructor
+     *
+     * @param   array $attributes The data to populate the element with
+     */
+    public function __construct($attributes)
+    {
+        foreach ($attributes as $name => $value) {
+            $method = 'set' . ucfirst($name);
 
-			if (is_callable([$this, $method]))
-			{
-				$this->$method($value);
-			}
-			else
-			{
-				$this->$name = $value;
-			}
-		}
-	}
+            if (is_callable([$this, $method])) {
+                $this->$method($value);
+            } else {
+                $this->$name = $value;
+            }
+        }
+    }
 
-	/**
-	 * Returns an array of variables assigned to this element.
-	 *
-	 * @return array
-	 */
-	public function toArray()
-	{
-		return get_object_vars($this);
-	}
+    /**
+     * Returns an array of variables assigned to this element.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return get_object_vars($this);
+    }
 
-	/**
-	 * Gets the column name for an identifier
-	 *
-	 * @param   string  $identifier  The identifier
-	 *
-	 * @return string
-	 */
-	public function columnName($identifier)
-	{
-		return Normalise::toUnderscoreSeparated($identifier);
-	}
+    /**
+     * Gets the column name for an identifier
+     *
+     * @param   string $identifier The identifier
+     *
+     * @return string
+     */
+    public function columnName($identifier)
+    {
+        return Normalise::toUnderscoreSeparated($identifier);
+    }
 
-	/**
-	 * Gets the property name for an identifier
-	 *
-	 * @param   string $identifier The identifier
-	 *
-	 * @return  string
-	 */
-	public function propertyName($identifier)
-	{
-		return Normalise::toVariable($identifier);
-	}
+    /**
+     * Gets the property name for an identifier
+     *
+     * @param   string $identifier The identifier
+     *
+     * @return  string
+     */
+    public function propertyName($identifier)
+    {
+        return Normalise::toVariable($identifier);
+    }
 
-	/**
-	 * Determine the basename of an id field
-	 *
-	 * @param   string $name The field name
-	 *
-	 * @return  string  The name without 'id' suffix
-	 */
-	protected function getBasename($name)
-	{
-		return preg_replace('~^(.*?)_?id$~i', '\1', $name);
-	}
+    /**
+     * Determine the basename of an id field
+     *
+     * @param   string $name The field name
+     *
+     * @return  string  The name without 'id' suffix
+     */
+    protected function getBasename($name)
+    {
+        return preg_replace('~^(.*?)_?id$~i', '\1', $name);
+    }
 }

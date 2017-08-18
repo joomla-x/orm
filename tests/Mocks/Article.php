@@ -10,11 +10,11 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Article
 {
-	public $id;
-	public $title;
-	public $teaser;
-	public $body;
-	public $author;
-	public $license;
-	public $parentId = 0;
+    public $id;
+    public $title;
+    public $teaser;
+    public $body;
+    public $author;
+    public $license;
+    public $parentId = 0;
 }

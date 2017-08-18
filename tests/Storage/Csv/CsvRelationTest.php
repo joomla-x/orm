@@ -20,30 +20,29 @@ use Joomla\ORM\Tests\Storage\RelationTestCases;
 
 class CsvRelationTest extends RelationTestCases
 {
-	protected function onBeforeSetup()
-	{
-		$dataPath = realpath(__DIR__ . '/../..');
+    protected function onBeforeSetup()
+    {
+        $dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
+        $this->config = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
 
-		$this->connection = new CsvDataGateway($this->config['dataPath']);
-		$this->transactor = new CsvTransactor($this->connection);
-	}
+        $this->connection = new CsvDataGateway($this->config['dataPath']);
+        $this->transactor = new CsvTransactor($this->connection);
+    }
 
-	protected function onAfterSetUp()
-	{
-		$entities = [Master::class, Detail::class, Extra::class, Tag::class];
+    protected function onAfterSetUp()
+    {
+        $entities = [Master::class, Detail::class, Extra::class, Tag::class];
 
-		foreach ($entities as $className)
-		{
-			$meta                   = $this->builder->getMeta($className);
-			$dataMapper             = new CsvDataMapper(
-				$this->connection,
-				$className,
-				$meta->storage['table'],
-				$this->entityRegistry
-			);
-			$this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
-		}
-	}
+        foreach ($entities as $className) {
+            $meta                   = $this->builder->getMeta($className);
+            $dataMapper             = new CsvDataMapper(
+                $this->connection,
+                $className,
+                $meta->storage['table'],
+                $this->entityRegistry
+            );
+            $this->repo[$className] = new Repository($className, $dataMapper, $this->unitOfWork);
+        }
+    }
 }

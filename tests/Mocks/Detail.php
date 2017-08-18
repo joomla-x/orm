@@ -10,8 +10,8 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Detail
 {
-	public $id;
-	public $field1;
-	public $field2;
-	public $masterId = 0;
+    public $id;
+    public $field1;
+    public $field2;
+    public $masterId = 0;
 }

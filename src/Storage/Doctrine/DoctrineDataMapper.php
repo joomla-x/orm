@@ -28,128 +28,148 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  */
 class DoctrineDataMapper implements DataMapperInterface
 {
-	/** @var \Doctrine\DBAL\Connection The connection */
-	private $connection;
+    /** @var \Doctrine\DBAL\Connection The connection */
+    private $connection;
 
-	/** @var string  Class of the entity */
-	private $entityClass;
+    /** @var string  Class of the entity */
+    private $entityClass;
 
-	/** @var  string  Name of the data table */
-	private $table;
+    /** @var  string  Name of the data table */
+    private $table;
 
-	/** @var  EntityRegistry */
-	private $entityRegistry;
+    /** @var  EntityRegistry */
+    private $entityRegistry;
 
-	use DispatcherAwareTrait;
+    use DispatcherAwareTrait;
 
-	/**
-	 * DoctrineDataMapper constructor.
-	 *
-	 * @param   Connection     $connection     The database connection
-	 * @param   string         $entityClass    The class name of the entity
-	 * @param   string         $table          The table name
-	 * @param   EntityRegistry $entityRegistry The entity registry
-	 */
-	public function __construct(Connection $connection, $entityClass, $table, EntityRegistry $entityRegistry)
-	{
-		$this->connection     = $connection;
-		$this->entityClass    = $entityClass;
-		$this->table          = $table;
-		$this->entityRegistry = $entityRegistry;
+    /**
+     * DoctrineDataMapper constructor.
+     *
+     * @param   Connection     $connection     The database connection
+     * @param   string         $entityClass    The class name of the entity
+     * @param   string         $table          The table name
+     * @param   EntityRegistry $entityRegistry The entity registry
+     */
+    public function __construct(Connection $connection, $entityClass, $table, EntityRegistry $entityRegistry)
+    {
+        $this->connection     = $connection;
+        $this->entityClass    = $entityClass;
+        $this->table          = $table;
+        $this->entityRegistry = $entityRegistry;
 
-		$this->setDispatcher(new NullDispatcher);
-	}
+        $this->setDispatcher(new NullDispatcher);
+    }
 
-	/**
-	 * Find an entity using its id.
-	 *
-	 * getById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->getItem()
-	 *
-	 * @param   mixed $id The id value
-	 *
-	 * @return  object  The requested entity
-	 *
-	 * @throws  EntityNotFoundException  if the entity does not exist
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function getById($id)
-	{
-		return $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
-	}
+    /**
+     * Find an entity using its id.
+     *
+     * getById() is a convenience method, It is equivalent to
+     * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->getItem()
+     *
+     * @param   mixed $id The id value
+     *
+     * @return  object  The requested entity
+     *
+     * @throws  EntityNotFoundException  if the entity does not exist
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function getById($id)
+    {
+        return $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
+    }
 
-	/**
-	 * Find a single entity.
-	 *
-	 * @return  EntityFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function findOne()
-	{
-		$finder = new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
-		$finder->setDispatcher($this->getDispatcher());
+    /**
+     * Find a single entity.
+     *
+     * @return  EntityFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function findOne()
+    {
+        $finder = new DoctrineEntityFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
+        $finder->setDispatcher($this->getDispatcher());
 
-		return $finder;
-	}
+        return $finder;
+    }
 
-	/**
-	 * Find multiple entities.
-	 *
-	 * @return  CollectionFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entities
-	 */
-	public function findAll()
-	{
-		$finder = new DoctrineCollectionFinder($this->connection, $this->table, $this->entityClass, $this->entityRegistry);
-		$finder->setDispatcher($this->getDispatcher());
+    /**
+     * Find multiple entities.
+     *
+     * @return  CollectionFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entities
+     */
+    public function findAll()
+    {
+        $finder = new DoctrineCollectionFinder(
+            $this->connection,
+            $this->table,
+            $this->entityClass,
+            $this->entityRegistry
+        );
+        $finder->setDispatcher($this->getDispatcher());
 
-		return $finder;
-	}
+        return $finder;
+    }
 
-	/**
-	 * Inserts an entity to the storage
-	 *
-	 * @param   object $entity The entity to insert
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be inserted
-	 */
-	public function insert($entity)
-	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
-		$persistor->insert($entity);
-	}
+    /**
+     * Inserts an entity to the storage
+     *
+     * @param   object $entity The entity to insert
+     *
+     * @return  void
+     *
+     * @throws  OrmException  if the entity could not be inserted
+     */
+    public function insert($entity)
+    {
+        $persistor = new DoctrinePersistor(
+            $this->connection,
+            $this->table,
+            $this->entityRegistry->getEntityBuilder(),
+            $this->entityRegistry
+        );
+        $persistor->insert($entity);
+    }
 
-	/**
-	 * Updates an entity in the storage
-	 *
-	 * @param   object $entity The entity to insert
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be updated
-	 */
-	public function update($entity)
-	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
-		$persistor->update($entity);
-	}
+    /**
+     * Updates an entity in the storage
+     *
+     * @param   object $entity The entity to insert
+     *
+     * @return  void
+     *
+     * @throws  OrmException  if the entity could not be updated
+     */
+    public function update($entity)
+    {
+        $persistor = new DoctrinePersistor(
+            $this->connection,
+            $this->table,
+            $this->entityRegistry->getEntityBuilder(),
+            $this->entityRegistry
+        );
+        $persistor->update($entity);
+    }
 
-	/**
-	 * Deletes an entity from the storage
-	 *
-	 * @param   object $entity The entity to delete
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be deleted
-	 */
-	public function delete($entity)
-	{
-		$persistor = new DoctrinePersistor($this->connection, $this->table, $this->entityRegistry->getEntityBuilder(), $this->entityRegistry);
-		$persistor->delete($entity);
-	}
+    /**
+     * Deletes an entity from the storage
+     *
+     * @param   object $entity The entity to delete
+     *
+     * @return  void
+     *
+     * @throws  OrmException  if the entity could not be deleted
+     */
+    public function delete($entity)
+    {
+        $persistor = new DoctrinePersistor(
+            $this->connection,
+            $this->table,
+            $this->entityRegistry->getEntityBuilder(),
+            $this->entityRegistry
+        );
+        $persistor->delete($entity);
+    }
 }

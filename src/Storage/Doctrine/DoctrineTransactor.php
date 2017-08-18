@@ -22,70 +22,61 @@ use Joomla\ORM\UnitOfWork\TransactionInterface;
  */
 class DoctrineTransactor implements TransactionInterface
 {
-	/** @var Connection the connection to work on */
-	private $connection = null;
+    /** @var Connection the connection to work on */
+    private $connection = null;
 
-	/**
-	 * DoctrineTransactor constructor.
-	 *
-	 * @param   Connection $connection The database connection
-	 */
-	public function __construct(Connection $connection)
-	{
-		$this->connection = $connection;
-	}
+    /**
+     * DoctrineTransactor constructor.
+     *
+     * @param   Connection $connection The database connection
+     */
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
 
-	/**
-	 * Initiates a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function beginTransaction()
-	{
-		try
-		{
-			$this->connection->beginTransaction();
-		}
-		catch (DBALException $e)
-		{
-			throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Initiates a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function beginTransaction()
+    {
+        try {
+            $this->connection->beginTransaction();
+        } catch (DBALException $e) {
+            throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 
-	/**
-	 * Commits a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function commit()
-	{
-		try
-		{
-			$this->connection->commit();
-		}
-		catch (DBALException $e)
-		{
-			throw new OrmException("Unable to commit changes.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Commits a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function commit()
+    {
+        try {
+            $this->connection->commit();
+        } catch (DBALException $e) {
+            throw new OrmException("Unable to commit changes.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 
-	/**
-	 * Rolls back the current transaction, as initiated by beginTransaction().
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function rollBack()
-	{
-		try
-		{
-			$this->connection->rollBack();
-		}
-		catch (DBALException $e)
-		{
-			throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
-		}
-	}
+    /**
+     * Rolls back the current transaction, as initiated by beginTransaction().
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function rollBack()
+    {
+        try {
+            $this->connection->rollBack();
+        } catch (DBALException $e) {
+            throw new OrmException("Unable to start transaction.\n" . $e->getMessage(), 0, $e);
+        }
+    }
 }

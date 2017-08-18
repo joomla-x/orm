@@ -20,22 +20,21 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  */
 class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFinderInterface
 {
-	/**
-	 * Fetch the entity
-	 *
-	 * @return  mixed
-	 *
-	 * @throws  EntityNotFoundException  if the specified entity does not exist.
-	 */
-	public function getItem()
-	{
-		$entities = parent::getItems();
+    /**
+     * Fetch the entity
+     *
+     * @return  mixed
+     *
+     * @throws  EntityNotFoundException  if the specified entity does not exist.
+     */
+    public function getItem()
+    {
+        $entities = parent::getItems();
 
-		if (empty($entities))
-		{
-			throw new EntityNotFoundException;
-		}
+        if (empty($entities)) {
+            throw new EntityNotFoundException;
+        }
 
-		return reset($entities);
-	}
+        return reset($entities);
+    }
 }

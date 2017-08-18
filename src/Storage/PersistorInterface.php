@@ -17,30 +17,30 @@ namespace Joomla\ORM\Storage;
  */
 interface PersistorInterface
 {
-	/**
-	 * Insert an entity.
-	 *
-	 * @param   object $entity The entity to store
-	 *
-	 * @return  void
-	 */
-	public function insert($entity);
+    /**
+     * Insert an entity.
+     *
+     * @param   object $entity The entity to store
+     *
+     * @return  void
+     */
+    public function insert($entity);
 
-	/**
-	 * Update an entity.
-	 *
-	 * @param   object $entity The entity to insert
-	 *
-	 * @return  void
-	 */
-	public function update($entity);
+    /**
+     * Update an entity.
+     *
+     * @param   object $entity The entity to insert
+     *
+     * @return  void
+     */
+    public function update($entity);
 
-	/**
-	 * Delete an entity.
-	 *
-	 * @param   object $entity The entity to sanitise
-	 *
-	 * @return  void
-	 */
-	public function delete($entity);
+    /**
+     * Delete an entity.
+     *
+     * @param   object $entity The entity to sanitise
+     *
+     * @return  void
+     */
+    public function delete($entity);
 }

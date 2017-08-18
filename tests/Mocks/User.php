@@ -13,89 +13,89 @@ namespace Joomla\ORM\Tests\Mocks;
  */
 class User
 {
-	/** @var int The user Id */
-	private $id = -1;
+    /** @var int The user Id */
+    public $id = -1;
 
-	/** @var int The Id of an imaginary aggregate root (eg parent) of this user */
-	private $aggregateRootId = -1;
+    /** @var int The Id of an imaginary aggregate root (eg parent) of this user */
+    public $aggregateRootId = -1;
 
-	/** @var int The Id of a second imaginary aggregate root of this user */
-	private $secondAggregateRootId = -1;
+    /** @var int The Id of a second imaginary aggregate root of this user */
+    public $secondAggregateRootId = -1;
 
-	/** @var string The username */
-	private $username = "";
+    /** @var string The username */
+    public $username = "";
 
-	/**
-	 * @param int    $id       The user Id
-	 * @param string $username The username
-	 */
-	public function __construct($id = 0, $username = '')
-	{
-		$this->id       = $id;
-		$this->username = $username;
-	}
+    /**
+     * @param int    $id       The user Id
+     * @param string $username The username
+     */
+    public function __construct($id = 0, $username = '')
+    {
+        $this->id       = $id;
+        $this->username = $username;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getAggregateRootId()
-	{
-		return $this->aggregateRootId;
-	}
+    /**
+     * @return int
+     */
+    public function getAggregateRootId()
+    {
+        return $this->aggregateRootId;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @param int $aggregateRootId
+     */
+    public function setAggregateRootId($aggregateRootId)
+    {
+        $this->aggregateRootId = $aggregateRootId;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getSecondAggregateRootId()
-	{
-		return $this->secondAggregateRootId;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getUsername()
-	{
-		return $this->username;
-	}
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
-	/**
-	 * @param int $aggregateRootId
-	 */
-	public function setAggregateRootId($aggregateRootId)
-	{
-		$this->aggregateRootId = $aggregateRootId;
-	}
+    /**
+     * @return int
+     */
+    public function getSecondAggregateRootId()
+    {
+        return $this->secondAggregateRootId;
+    }
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    /**
+     * @param int $secondAggregateRootId
+     */
+    public function setSecondAggregateRootId($secondAggregateRootId)
+    {
+        $this->secondAggregateRootId = $secondAggregateRootId;
+    }
 
-	/**
-	 * @param int $secondAggregateRootId
-	 */
-	public function setSecondAggregateRootId($secondAggregateRootId)
-	{
-		$this->secondAggregateRootId = $secondAggregateRootId;
-	}
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
-	/**
-	 * @param string $username
-	 */
-	public function setUsername($username)
-	{
-		$this->username = $username;
-	}
+    /**
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
 }

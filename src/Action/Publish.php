@@ -10,14 +10,13 @@ namespace Joomla\ORM\Action;
 
 class Publish extends AbstractAction
 {
-	public function __invoke($entity)
-	{
-		$meta = $this->repository->getMeta();
+    public function __invoke($entity)
+    {
+        $meta = $this->repository->getMeta();
 
-		if (!empty($meta->fieldAliases['state']))
-		{
-			$property            = $meta->propertyName($meta->fieldAliases['state']);
-			$entity->{$property} = 1;
-		}
-	}
+        if (!empty($meta->fieldAliases['state'])) {
+            $property            = $meta->propertyName($meta->fieldAliases['state']);
+            $entity->{$property} = 1;
+        }
+    }
 }

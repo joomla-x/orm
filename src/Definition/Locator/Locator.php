@@ -19,52 +19,50 @@ use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
  */
 final class Locator implements LocatorInterface
 {
-	/** @var  StrategyInterface[]  Locator strategies */
-	private $strategies = [];
+    /** @var  StrategyInterface[]  Locator strategies */
+    private $strategies = [];
 
-	/**
-	 * Constructor
-	 *
-	 * @param   StrategyInterface[] $strategies The strategies used to locate files
-	 */
-	public function __construct(array $strategies)
-	{
-		$this->strategies = $strategies;
-	}
+    /**
+     * Constructor
+     *
+     * @param   StrategyInterface[] $strategies The strategies used to locate files
+     */
+    public function __construct(array $strategies)
+    {
+        $this->strategies = $strategies;
+    }
 
-	/**
-	 * Find the description file for an entity
-	 *
-	 * @param   string $filename The name of the file
-	 *
-	 * @return  string  Path to the XML file
-	 */
-	public function findFile($filename)
-	{
-		$filename = basename(str_replace('\\', '/', $filename));
+    /**
+     * Find the description file for an entity
+     *
+     * @param   string $filename The name of the file
+     *
+     * @return  string  Path to the XML file
+     */
+    public function findFile($filename)
+    {
+        $filename = basename(str_replace('\\', '/', $filename));
 
-		foreach ($this->strategies as $strategy)
-		{
-			$path = $strategy->locate($filename);
+        foreach ($this->strategies as $strategy) {
+            $path = $strategy->locate($filename);
 
-			if (!is_null($path))
-			{
-				return $path;
-			}
-		}
+            if (!is_null($path)) {
+                return $path;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Adds a strategy
-	 *
-	 * @param   StrategyInterface $strategy The strategy
-	 *
-	 * @return  void
-	 */
-	public function add(StrategyInterface $strategy)
-	{
-		array_unshift($this->strategies, $strategy);
-	}
+    /**
+     * Adds a strategy
+     *
+     * @param   StrategyInterface $strategy The strategy
+     *
+     * @return  void
+     */
+    public function add(StrategyInterface $strategy)
+    {
+        array_unshift($this->strategies, $strategy);
+    }
 }

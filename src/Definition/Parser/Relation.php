@@ -17,25 +17,25 @@ namespace Joomla\ORM\Definition\Parser;
  */
 abstract class Relation extends Element
 {
-	/** @var  string  The relation name */
-	public $name = null;
+    /** @var  string  The relation name */
+    public $name = null;
 
-	/** @var  string  The relation type */
-	public $type;
+    /** @var  string  The relation type */
+    public $type;
 
-	/** @var  string  The name of the related Entity */
-	public $entity;
+    /** @var  string  The name of the related Entity */
+    public $entity;
 
-	/** @var  string  Key name in related entity */
-	public $reference;
+    /** @var  string  Key name in related entity */
+    public $reference;
 
-	/**
-	 * Determines whether the relation is required
-	 *
-	 * @return  boolean
-	 */
-	public function isRequired()
-	{
-		return false;
-	}
+    /**
+     * Determines whether the relation is required
+     *
+     * @return  boolean
+     */
+    public function isRequired()
+    {
+        return false;
+    }
 }

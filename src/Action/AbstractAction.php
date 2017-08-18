@@ -13,23 +13,23 @@ use Psr\Container\ContainerInterface;
 
 abstract class AbstractAction
 {
-	/** @var  ContainerInterface */
-	protected $repository;
+    /** @var  ContainerInterface */
+    protected $repository;
 
-	/**
-	 * AbstractAction constructor.
-	 *
-	 * @param RepositoryInterface $repository
-	 */
-	public function __construct(RepositoryInterface $repository)
-	{
-		$this->repository = $repository;
-	}
+    /**
+     * AbstractAction constructor.
+     *
+     * @param RepositoryInterface $repository
+     */
+    public function __construct(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
 
-	/**
-	 * @param object $entity
-	 *
-	 * @return void
-	 */
-	abstract public function __invoke($entity);
+    /**
+     * @param object $entity
+     *
+     * @return void
+     */
+    abstract public function __invoke($entity);
 }

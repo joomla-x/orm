@@ -12,41 +12,41 @@ use PHPUnit\Framework\TestCase;
 
 class ObjectTest extends TestCase
 {
-	/**
-	 * @testdox spl_object_hash() returns same value, even if object properties have changed
-	 */
-	public function testObjectIdentity()
-	{
-		$object     = new \stdClass;
-		$hashBefore = spl_object_hash($object);
+    /**
+     * @testdox spl_object_hash() returns same value, even if object properties have changed
+     */
+    public function testObjectIdentity()
+    {
+        $object     = new \stdClass;
+        $hashBefore = spl_object_hash($object);
 
-		$object->property = 'value';
-		$hashAfter        = spl_object_hash($object);
+        $object->property = 'value';
+        $hashAfter        = spl_object_hash($object);
 
-		$this->assertEquals($hashBefore, $hashAfter);
+        $this->assertEquals($hashBefore, $hashAfter);
 
-		$reference     = $object;
-		$hashReference = spl_object_hash($reference);
+        $reference     = $object;
+        $hashReference = spl_object_hash($reference);
 
-		$this->assertEquals($hashBefore, $hashReference);
+        $this->assertEquals($hashBefore, $hashReference);
 
-		$clone     = clone($object);
-		$hashClone = spl_object_hash($clone);
+        $clone     = clone($object);
+        $hashClone = spl_object_hash($clone);
 
-		$this->assertNotEquals($hashBefore, $hashClone);
-	}
+        $this->assertNotEquals($hashBefore, $hashClone);
+    }
 
-	/**
-	 * @testdox md5(serialize()) returns different value, if object properties have changed
-	 */
-	public function testObjectChange()
-	{
-		$object     = new \stdClass;
-		$hashBefore = md5(serialize($object));
+    /**
+     * @testdox md5(serialize()) returns different value, if object properties have changed
+     */
+    public function testObjectChange()
+    {
+        $object     = new \stdClass;
+        $hashBefore = md5(serialize($object));
 
-		$object->property = 'value';
-		$hashAfter        = md5(serialize($object));
+        $object->property = 'value';
+        $hashAfter        = md5(serialize($object));
 
-		$this->assertNotEquals($hashBefore, $hashAfter);
-	}
+        $this->assertNotEquals($hashBefore, $hashAfter);
+    }
 }

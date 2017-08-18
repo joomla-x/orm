@@ -17,33 +17,33 @@ namespace Joomla\ORM\Definition\Parser;
  */
 class BelongsToMany extends Relation
 {
-	/**
-	 * Gets the property name for the foreign key
-	 *
-	 * @return  string
-	 */
-	public function varIdName()
-	{
-		return $this->propertyName($this->reference);
-	}
+    /**
+     * Gets the property name for the foreign key
+     *
+     * @return  string
+     */
+    public function varIdName()
+    {
+        return $this->propertyName($this->reference);
+    }
 
-	/**
-	 * Gets the property name for the entity
-	 *
-	 * @return  string
-	 */
-	public function varObjectName()
-	{
-		return $this->propertyName($this->getBasename($this->name));
-	}
+    /**
+     * Gets the property name for the entity
+     *
+     * @return  string
+     */
+    public function varObjectName()
+    {
+        return $this->propertyName($this->getBasename($this->name));
+    }
 
-	/**
-	 * Gets the column name for the foreign key
-	 *
-	 * @return  string
-	 */
-	public function colIdName()
-	{
-		return $this->columnName($this->reference);
-	}
+    /**
+     * Gets the column name for the foreign key
+     *
+     * @return  string
+     */
+    public function colIdName()
+    {
+        return $this->columnName($this->reference);
+    }
 }

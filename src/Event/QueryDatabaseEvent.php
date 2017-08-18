@@ -20,36 +20,36 @@ use Joomla\Event\Event;
  */
 class QueryDatabaseEvent extends Event
 {
-	/**
-	 * QueryDatabaseEvent constructor.
-	 *
-	 * @param   string       $entityClass The class of the entity
-	 * @param   QueryBuilder $builder     The query builder
-	 */
-	public function __construct($entityClass, QueryBuilder $builder)
-	{
-		parent::__construct(
-			'onQueryDatabase',
-			[
-				'entityClass' => $entityClass,
-				'query'       => $builder
-			]
-		);
-	}
+    /**
+     * QueryDatabaseEvent constructor.
+     *
+     * @param   string       $entityClass The class of the entity
+     * @param   QueryBuilder $builder     The query builder
+     */
+    public function __construct($entityClass, QueryBuilder $builder)
+    {
+        parent::__construct(
+            'onQueryDatabase',
+            [
+                'entityClass' => $entityClass,
+                'query'       => $builder,
+            ]
+        );
+    }
 
-	/**
-	 * @return   string
-	 */
-	public function getEntityClass()
-	{
-		return $this->getArgument('entityClass');
-	}
+    /**
+     * @return   string
+     */
+    public function getEntityClass()
+    {
+        return $this->getArgument('entityClass');
+    }
 
-	/**
-	 * @return   QueryBuilder
-	 */
-	public function getQuery()
-	{
-		return $this->getArgument('query');
-	}
+    /**
+     * @return   QueryBuilder
+     */
+    public function getQuery()
+    {
+        return $this->getArgument('query');
+    }
 }

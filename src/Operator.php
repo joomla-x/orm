@@ -17,21 +17,21 @@ namespace Joomla\ORM;
  */
 abstract class Operator
 {
-	const EQ = self::EQUAL;
-	const EQUAL = '=';
-	const NE = self::NOT_EQUAL;
-	const NOT_EQUAL = '<>';
-	const GT = self::GREATER_THAN;
-	const GREATER_THAN = '>';
-	const GE = self::GREATER_OR_EQUAL;
-	const GREATER_OR_EQUAL = '>=';
-	const LT = self::LESS_THAN;
-	const LESS_THAN = '<';
-	const LE = self::LESS_OR_EQUAL;
-	const LESS_OR_EQUAL = '<=';
-	const CONTAINS = '%LIKE%';
-	const STARTS_WITH = 'LIKE%';
-	const ENDS_WITH = '%LIKE';
-	const MATCHES = 'RLIKE';
-	const IN = 'IN';
+    const EQ               = self::EQUAL;
+    const EQUAL            = '=';
+    const NE               = self::NOT_EQUAL;
+    const NOT_EQUAL        = '<>';
+    const GT               = self::GREATER_THAN;
+    const GREATER_THAN     = '>';
+    const GE               = self::GREATER_OR_EQUAL;
+    const GREATER_OR_EQUAL = '>=';
+    const LT               = self::LESS_THAN;
+    const LESS_THAN        = '<';
+    const LE               = self::LESS_OR_EQUAL;
+    const LESS_OR_EQUAL    = '<=';
+    const CONTAINS         = '%LIKE%';
+    const STARTS_WITH      = 'LIKE%';
+    const ENDS_WITH        = '%LIKE';
+    const MATCHES          = 'RLIKE';
+    const IN               = 'IN';
 }

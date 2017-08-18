@@ -20,18 +20,18 @@ use Joomla\ORM\Entity\EntityRegistry;
  */
 class PrefixedDoctrineDataMapper extends DoctrineDataMapper
 {
-	/**
-	 * DoctrineDataMapper constructor.
-	 *
-	 * @param   Connection     $connection     The database connection
-	 * @param   string         $entityClass    The class name of the entity
-	 * @param   string         $table          The table name
-	 * @param   EntityRegistry $entityRegistry The entity registry
-	 */
-	public function __construct(Connection $connection, $entityClass, $table, EntityRegistry $entityRegistry)
-	{
-		$config = new \JConfig();
-		$prefix = $config->dbprefix;
-		parent::__construct($connection, $entityClass, $prefix . $table, $entityRegistry);
-	}
+    /**
+     * DoctrineDataMapper constructor.
+     *
+     * @param   Connection     $connection     The database connection
+     * @param   string         $entityClass    The class name of the entity
+     * @param   string         $table          The table name
+     * @param   EntityRegistry $entityRegistry The entity registry
+     */
+    public function __construct(Connection $connection, $entityClass, $table, EntityRegistry $entityRegistry)
+    {
+        $config = new \JConfig();
+        $prefix = $config->dbprefix;
+        parent::__construct($connection, $entityClass, $prefix . $table, $entityRegistry);
+    }
 }

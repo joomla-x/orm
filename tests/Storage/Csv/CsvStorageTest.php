@@ -17,26 +17,26 @@ use Joomla\ORM\Tests\Storage\StorageTestCases;
 
 class CsvStorageTest extends StorageTestCases
 {
-	public function setUp()
-	{
-		$dataPath = realpath(__DIR__ . '/../..');
+    public function setUp()
+    {
+        $dataPath = realpath(__DIR__ . '/../..');
 
-		$this->config     = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
-		$this->connection = new CsvDataGateway($this->config['dataPath']);
-		$this->transactor = new CsvTransactor($this->connection);
+        $this->config     = parse_ini_file($dataPath . '/data/entities.csv.ini', true);
+        $this->connection = new CsvDataGateway($this->config['dataPath']);
+        $this->transactor = new CsvTransactor($this->connection);
 
-		parent::setUp();
+        parent::setUp();
 
-		$dataMapper = new CsvDataMapper(
-			$this->connection,
-			Article::class,
-			'articles',
-			$this->entityRegistry
-		);
-		$this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
-	}
+        $dataMapper = new CsvDataMapper(
+            $this->connection,
+            Article::class,
+            'articles',
+            $this->entityRegistry
+        );
+        $this->repo = new Repository(Article::class, $dataMapper, $this->unitOfWork);
+    }
 
-	public function tearDown()
-	{
-	}
+    public function tearDown()
+    {
+    }
 }

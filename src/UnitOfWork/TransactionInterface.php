@@ -19,27 +19,27 @@ use Joomla\ORM\Exception\OrmException;
  */
 interface TransactionInterface
 {
-	/**
-	 * Initiates a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function beginTransaction();
+    /**
+     * Initiates a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function beginTransaction();
 
-	/**
-	 * Commits a transaction.
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function commit();
+    /**
+     * Commits a transaction.
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function commit();
 
-	/**
-	 * Rolls back the current transaction, as initiated by beginTransaction().
-	 *
-	 * @return  void
-	 * @throws  OrmException  on failure.
-	 */
-	public function rollBack();
+    /**
+     * Rolls back the current transaction, as initiated by beginTransaction().
+     *
+     * @return  void
+     * @throws  OrmException  on failure.
+     */
+    public function rollBack();
 }

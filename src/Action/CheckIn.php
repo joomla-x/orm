@@ -15,50 +15,48 @@ use PEP\Entity\User;
 
 class CheckIn extends AbstractAction
 {
-	/** @var  JUser */
-	private $user;
+    /** @var  JUser */
+    private $user;
 
-	public function __construct(RepositoryInterface $repository, User $user)
-	{
-		parent::__construct($repository);
+    public function __construct(RepositoryInterface $repository, User $user)
+    {
+        parent::__construct($repository);
 
-		$this->user = $user;
-	}
+        $this->user = $user;
+    }
 
-	/**
-	 * @param object $entity
-	 */
-	public function __invoke($entity)
-	{
-		$meta = $this->repository->getMeta();
+    /**
+     * @param object $entity
+     */
+    public function __invoke($entity)
+    {
+        $meta = $this->repository->getMeta();
 
-		if (!empty($meta->fieldAliases['checked_out_by']))
-		{
-			$property = $meta->propertyName($meta->fieldAliases['checked_out_by']);
+        if (!empty($meta->fieldAliases['checked_out_by'])) {
+            $property = $meta->propertyName($meta->fieldAliases['checked_out_by']);
 
-			if ($entity->{$property} > 0 && $entity->{$property} != $this->user->id && !$this->user->authorise('core.admin', 'com_checkin'))
-			{
-				throw new \RuntimeException("Entity was locked by another user.");
-			}
+            if ($entity->{$property} > 0
+                && $entity->{$property} != $this->user->id
+                && !$this->user->authorise('core.admin', 'com_checkin')
+            ) {
+                throw new \RuntimeException("Entity was locked by another user.");
+            }
 
-			$entity->{$property} = 0;
+            $entity->{$property} = 0;
 
-			/** @var BelongsTo $relation */
-			foreach ($meta->relations['belongsTo'] as $relation)
-			{
-				if ($relation->colIdName() == $meta->fieldAliases['checked_out_by'])
-				{
-					$property = $relation->varObjectName();
-					$entity->{$property} = null;
-					break;
-				}
-			}
-		}
+            /** @var BelongsTo $relation */
+            foreach ($meta->relations['belongsTo'] as $relation) {
+                if ($relation->colIdName() == $meta->fieldAliases['checked_out_by']) {
+                    $property            = $relation->varObjectName();
+                    $entity->{$property} = null;
+                    break;
+                }
+            }
+        }
 
-		if (!empty($meta->fieldAliases['checked_out_time']))
-		{
-			$property = $meta->propertyName($meta->fieldAliases['checked_out_time']);
-			$entity->{$property} = null;
-		}
-	}
+        if (!empty($meta->fieldAliases['checked_out_time'])) {
+            $property            = $meta->propertyName($meta->fieldAliases['checked_out_time']);
+            $entity->{$property} = null;
+        }
+    }
 }

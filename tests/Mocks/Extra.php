@@ -10,11 +10,11 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Extra
 {
-	public $detailId;
-	public $info;
+    public $detailId;
+    public $info;
 
-	public function __construct($info = null)
-	{
-		$this->info = $info;
-	}
+    public function __construct($info = null)
+    {
+        $this->info = $info;
+    }
 }

@@ -20,36 +20,36 @@ use Joomla\ORM\Exception\OrmException;
  */
 interface DataMapperInterface extends PersistorInterface
 {
-	/**
-	 * Find an entity using its id.
-	 *
-	 * getById() is a convenience method, It is equivalent to
-	 * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
-	 *
-	 * @param   mixed $id The id value
-	 *
-	 * @return  object  The requested entity
-	 *
-	 * @throws  EntityNotFoundException  if the entity does not exist
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function getById($id);
+    /**
+     * Find an entity using its id.
+     *
+     * getById() is a convenience method, It is equivalent to
+     * ->getOne()->with('id', \Joomla\ORM\Operator::EQUAL, '$id)->get()
+     *
+     * @param   mixed $id The id value
+     *
+     * @return  object  The requested entity
+     *
+     * @throws  EntityNotFoundException  if the entity does not exist
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function getById($id);
 
-	/**
-	 * Find a single entity.
-	 *
-	 * @return  EntityFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function findOne();
+    /**
+     * Find a single entity.
+     *
+     * @return  EntityFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function findOne();
 
-	/**
-	 * Find multiple entities.
-	 *
-	 * @return  CollectionFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entities
-	 */
-	public function findAll();
+    /**
+     * Find multiple entities.
+     *
+     * @return  CollectionFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entities
+     */
+    public function findAll();
 }

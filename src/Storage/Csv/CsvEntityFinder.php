@@ -20,21 +20,20 @@ use Joomla\ORM\Storage\EntityFinderInterface;
  */
 class CsvEntityFinder extends CsvCollectionFinder implements EntityFinderInterface
 {
-	/**
-	 * Gets the entity
-	 *
-	 * @return  mixed  The requested item
-	 * @throws  EntityNotFoundException  if the specified entity does not exist.
-	 */
-	public function getItem()
-	{
-		$items = $this->getItems();
+    /**
+     * Gets the entity
+     *
+     * @return  mixed  The requested item
+     * @throws  EntityNotFoundException  if the specified entity does not exist.
+     */
+    public function getItem()
+    {
+        $items = $this->getItems();
 
-		if (empty($items))
-		{
-			throw new EntityNotFoundException;
-		}
+        if (empty($items)) {
+            throw new EntityNotFoundException;
+        }
 
-		return $items[0];
-	}
+        return $items[0];
+    }
 }

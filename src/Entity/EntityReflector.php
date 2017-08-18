@@ -20,100 +20,99 @@ use Joomla\ORM\Definition\Parser\Field;
  */
 class EntityReflector
 {
-	/** @var  EntityInterface  The entity */
-	private $entity;
+    /** @var  EntityInterface  The entity */
+    private $entity;
 
-	/** @var \ReflectionProperty */
-	private $fields;
+    /** @var \ReflectionProperty */
+    private $fields;
 
-	/** @var \ReflectionProperty */
-	private $relationHandlers;
+    /** @var \ReflectionProperty */
+    private $relationHandlers;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $entity  The entity
-	 */
-	public function __construct($entity)
-	{
-		$this->entity = $entity;
+    /**
+     * Constructor
+     *
+     * @param   object $entity The entity
+     */
+    public function __construct($entity)
+    {
+        $this->entity = $entity;
 
-		$this->fields = new \ReflectionProperty(entity::class, 'fields');
-		$this->fields->setAccessible(true);
+        $this->fields = new \ReflectionProperty(entity::class, 'fields');
+        $this->fields->setAccessible(true);
 
-		$this->relationHandlers = new \ReflectionProperty(entity::class, 'relationHandlers');
-		$this->relationHandlers->setAccessible(true);
-	}
+        $this->relationHandlers = new \ReflectionProperty(entity::class, 'relationHandlers');
+        $this->relationHandlers->setAccessible(true);
+    }
 
-	/**
-	 * Get the id value of an entity
-	 *
-	 * @return  mixed
-	 */
-	public function getId()
-	{
-		return $this->get($this->entity->key());
-	}
+    /**
+     * Get the id value of an entity
+     *
+     * @return  mixed
+     */
+    public function getId()
+    {
+        return $this->get($this->entity->key());
+    }
 
-	/**
-	 * Get a value from an entity
-	 *
-	 * @param   string  $property  The name of the property
-	 *
-	 * @return  mixed  The value of the property
-	 */
-	public function get($property)
-	{
-		return $this->entity->$property;
-	}
+    /**
+     * Get a value from an entity
+     *
+     * @param   string $property The name of the property
+     *
+     * @return  mixed  The value of the property
+     */
+    public function get($property)
+    {
+        return $this->entity->$property;
+    }
 
-	/**
-	 * Add a field to the entity
-	 *
-	 * @param   Field  $field  The field to add
-	 *
-	 * @return  void
-	 */
-	public function addField(Field $field)
-	{
-		$tmp               = $this->fields->getValue($this->entity);
-		$tmp[$field->name] = $field;
-		$this->fields->setValue($this->entity, $tmp);
+    /**
+     * Add a field to the entity
+     *
+     * @param   Field $field The field to add
+     *
+     * @return  void
+     */
+    public function addField(Field $field)
+    {
+        $tmp               = $this->fields->getValue($this->entity);
+        $tmp[$field->name] = $field;
+        $this->fields->setValue($this->entity, $tmp);
 
-		if ($field->role == 'id')
-		{
-			$key = new \ReflectionProperty(Entity::class, 'key');
-			$key->setAccessible(true);
-			$key->setValue($this->entity, $field->name);
-		}
-	}
+        if ($field->role == 'id') {
+            $key = new \ReflectionProperty(Entity::class, 'key');
+            $key->setAccessible(true);
+            $key->setValue($this->entity, $field->name);
+        }
+    }
 
-	/**
-	 * Add a relation handler to the entity
-	 *
-	 * @param   string    $name     Field name
-	 * @param   Callable  $handler  The relation handler
-	 *
-	 * @return  void
-	 */
-	public function addHandler($name, $handler)
-	{
-		$tmp        = $this->relationHandlers->getValue($this->entity);
-		$tmp[$name] = $handler;
-		$this->relationHandlers->setValue($this->entity, $tmp);
-	}
+    /**
+     * Add a relation handler to the entity
+     *
+     * @param   string   $name    Field name
+     * @param   Callable $handler The relation handler
+     *
+     * @return  void
+     */
+    public function addHandler($name, $handler)
+    {
+        $tmp        = $this->relationHandlers->getValue($this->entity);
+        $tmp[$name] = $handler;
+        $this->relationHandlers->setValue($this->entity, $tmp);
+    }
 
-	/**
-	 * Set the data definition
-	 *
-	 * @param   EntityStructure  $definition  The data definition
-	 *
-	 * @return  void
-	 */
-	public function setDefinition(EntityStructure $definition)
-	{
-		$tmp = new \ReflectionProperty(entity::class, 'definition');
-		$tmp->setAccessible(true);
-		$tmp->setValue($this->entity, $definition);
-	}
+    /**
+     * Set the data definition
+     *
+     * @param   EntityStructure $definition The data definition
+     *
+     * @return  void
+     */
+    public function setDefinition(EntityStructure $definition)
+    {
+        $tmp = new \ReflectionProperty(entity::class, 'definition');
+        $tmp->setAccessible(true);
+        $tmp->setValue($this->entity, $definition);
+    }
 }

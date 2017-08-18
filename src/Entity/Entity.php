@@ -22,187 +22,178 @@ use Joomla\String\Normalise;
  */
 class Entity implements EntityInterface
 {
-	/** @var  bool  Flag whether this entity is immutable */
-	private $immutable = false;
+    /** @var  bool  Flag whether this entity is immutable */
+    private $immutable = false;
 
-	/** @var  \Joomla\ORM\Definition\Parser\Entity $definition The definition of the entity */
-	private $definition;
+    /** @var  \Joomla\ORM\Definition\Parser\Entity $definition The definition of the entity */
+    private $definition;
 
-	/** @var  Field[]  The fields */
-	private $fields;
+    /** @var  Field[]  The fields */
+    private $fields;
 
-	/** @var  Callable[]  Relation resolvers */
-	private $relationHandlers;
+    /** @var  Callable[]  Relation resolvers */
+    private $relationHandlers;
 
-	/** @var  string|array  The name(s) of the id field */
-	private $key;
+    /** @var  string|array  The name(s) of the id field */
+    private $key;
 
-	/**
-	 * Get the type of the entity.
-	 *
-	 * @return  string  The type (name) of the entity
-	 */
-	public function type()
-	{
-		return $this->definition->name;
-	}
+    /**
+     * Bind data to the entity.
+     *
+     * @param   array $data The data for the entity as a list of key-value pairs
+     *
+     * @return  void
+     */
+    public function bind(Array $data)
+    {
+        foreach ($data as $property => $value) {
+            if ($this->has($property)) {
+                $this->$property = $value;
+            }
+        }
+    }
 
-	/**
-	 * Get the field for the primary key.
-	 *
-	 * @return  string  The name of the field
-	 */
-	public function key()
-	{
-		if (empty($this->key) && !empty($this->definition->primary))
-		{
-			$keys = array_values(
-				array_filter(
-					preg_split('~[\s,]+~', $this->definition->primary)
-				)
-			);
-			$keys = array_map(
-				function ($key) {
-					return Normalise::toVariable($key);
-				},
-				$keys
-			);
+    /**
+     * Check if the entity has a certain property.
+     *
+     * @param   string $property The name of the property
+     *
+     * @return  boolean
+     */
+    public function has($property)
+    {
+        return isset($this->fields[$property]);
+    }
 
-			$this->key = count($keys) > 1 ? $keys : array_shift($keys);
-		}
+    /**
+     * Make the entity readonly.
+     *
+     * Making the entity immutable is not reversible.
+     *
+     * @return  void
+     */
+    public function lock()
+    {
+        $this->immutable = true;
+    }
 
-		if (empty($this->key) && $this->has('id'))
-		{
-			$this->key = 'id';
-		}
+    /**
+     * Get a property from the entity.
+     *
+     * @param   string $property The name of the property
+     *
+     * @return  mixed  The value of the property
+     */
+    public function __get($property)
+    {
+        if (isset($this->fields[$property])) {
+            return $this->fields[$property]->value;
+        }
 
-		return $this->key;
-	}
+        if (isset($this->relationHandlers[$property])) {
+            return call_user_func($this->relationHandlers[$property]);
+        }
 
-	/**
-	 * Bind data to the entity.
-	 *
-	 * @param   array $data The data for the entity as a list of key-value pairs
-	 *
-	 * @return  void
-	 */
-	public function bind(Array $data)
-	{
-		foreach ($data as $property => $value)
-		{
-			if ($this->has($property))
-			{
-				$this->$property = $value;
-			}
-		}
-	}
+        throw new PropertyNotFoundException("Unknown property {$property}");
+    }
 
-	/**
-	 * Make the entity readonly.
-	 *
-	 * Making the entity immutable is not reversible.
-	 *
-	 * @return  void
-	 */
-	public function lock()
-	{
-		$this->immutable = true;
-	}
+    /**
+     * Set a property in the entity.
+     *
+     * @param   string $property The name of the property
+     * @param   mixed  $value    The value for the property
+     *
+     * @return  void
+     */
+    public function __set($property, $value)
+    {
+        if ($this->isImmutable()) {
+            throw new WriteOnImmutableException("Write attempt on immutable entity");
+        }
 
-	/**
-	 * Check if the entity is locked
-	 *
-	 * @return  boolean
-	 */
-	public function isImmutable()
-	{
-		return $this->immutable;
-	}
+        if (!$this->has($property)) {
+            throw new PropertyNotFoundException("Unknown property {$property}");
+        }
 
-	/**
-	 * Check if the entity has a certain property.
-	 *
-	 * @param   string $property The name of the property
-	 *
-	 * @return  boolean
-	 */
-	public function has($property)
-	{
-		return isset($this->fields[$property]);
-	}
+        $this->fields[$property]->value = $value;
+    }
 
-	/**
-	 * Get a property from the entity.
-	 *
-	 * @param   string $property The name of the property
-	 *
-	 * @return  mixed  The value of the property
-	 */
-	public function __get($property)
-	{
-		if (isset($this->fields[$property]))
-		{
-			return $this->fields[$property]->value;
-		}
+    /**
+     * Check if the entity is locked
+     *
+     * @return  boolean
+     */
+    public function isImmutable()
+    {
+        return $this->immutable;
+    }
 
-		if (isset($this->relationHandlers[$property]))
-		{
-			return call_user_func($this->relationHandlers[$property]);
-		}
+    /**
+     * Get the field values
+     *
+     * @return  array  The field values, indexed by field name
+     */
+    public function asArray()
+    {
+        $fields = [
+            '@type' => $this->type(),
+            '@key'  => $this->key(),
+        ];
 
-		throw new PropertyNotFoundException("Unknown property {$property}");
-	}
+        foreach ($this->fields as $name => $field) {
+            $fields[$name] = $field->value;
+        }
 
-	/**
-	 * Set a property in the entity.
-	 *
-	 * @param   string $property The name of the property
-	 * @param   mixed  $value    The value for the property
-	 *
-	 * @return  void
-	 */
-	public function __set($property, $value)
-	{
-		if ($this->isImmutable())
-		{
-			throw new WriteOnImmutableException("Write attempt on immutable entity");
-		}
+        return $fields;
+    }
 
-		if (!$this->has($property))
-		{
-			throw new PropertyNotFoundException("Unknown property {$property}");
-		}
+    /**
+     * Get the type of the entity.
+     *
+     * @return  string  The type (name) of the entity
+     */
+    public function type()
+    {
+        return $this->definition->name;
+    }
 
-		$this->fields[$property]->value = $value;
-	}
+    /**
+     * Get the field for the primary key.
+     *
+     * @return  string  The name of the field
+     */
+    public function key()
+    {
+        if (empty($this->key) && !empty($this->definition->primary)) {
+            $keys = array_values(
+                array_filter(
+                    preg_split('~[\s,]+~', $this->definition->primary)
+                )
+            );
+            $keys = array_map(
+                function ($key) {
+                    return Normalise::toVariable($key);
+                },
+                $keys
+            );
 
-	/**
-	 * Get the field values
-	 *
-	 * @return  array  The field values, indexed by field name
-	 */
-	public function asArray()
-	{
-		$fields = [
-			'@type' => $this->type(),
-			'@key'  => $this->key()
-		];
+            $this->key = count($keys) > 1 ? $keys : array_shift($keys);
+        }
 
-		foreach ($this->fields as $name => $field)
-		{
-			$fields[$name] = $field->value;
-		}
+        if (empty($this->key) && $this->has('id')) {
+            $this->key = 'id';
+        }
 
-		return $fields;
-	}
+        return $this->key;
+    }
 
-	/**
-	 * Get the original data structure
-	 *
-	 * @return  \Joomla\ORM\Definition\Parser\Entity
-	 */
-	public function getDefinition()
-	{
-		return $this->definition;
-	}
+    /**
+     * Get the original data structure
+     *
+     * @return  \Joomla\ORM\Definition\Parser\Entity
+     */
+    public function getDefinition()
+    {
+        return $this->definition;
+    }
 }

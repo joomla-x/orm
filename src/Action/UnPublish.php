@@ -10,14 +10,13 @@ namespace Joomla\ORM\Action;
 
 class UnPublish extends AbstractAction
 {
-	public function __invoke($entity)
-	{
-		$meta = $this->repository->getMeta();
+    public function __invoke($entity)
+    {
+        $meta = $this->repository->getMeta();
 
-		if (!empty($meta->fieldAliases['state']))
-		{
-			$property            = $meta->propertyName($meta->fieldAliases['state']);
-			$entity->{$property} = 0;
-		}
-	}
+        if (!empty($meta->fieldAliases['state'])) {
+            $property            = $meta->propertyName($meta->fieldAliases['state']);
+            $entity->{$property} = 0;
+        }
+    }
 }

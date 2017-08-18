@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\ORM\Tests\Mocks\Map">
 
     <storage>
         <default table="maps" primary="master_id,tag_id"/>
     </storage>
 
+    <fields>
+        <field
+            name="master_id"
+            type="foreignkey"
+            entity="Master"
+        >
+        </field>
+        <field
+            name="tag_id"
+            type="foreignkey"
+            entity="Tag"
+        >
+        </field>
+
+    </fields>
+
     <relations>
         <belongsTo
-            name="master_id"
+            name="master"
             entity="Master"
+            reference="master_id"
         />
         <belongsTo
-            name="tag_id"
+            name="tag"
             entity="Tag"
+            reference="tag_id"
         />
     </relations>
 

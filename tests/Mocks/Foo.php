@@ -13,22 +13,22 @@ namespace Joomla\ORM\Tests\Mocks;
  */
 class Foo
 {
-	/** @var int The Id */
-	private $id = -1;
+    /** @var int The Id */
+    private $id = -1;
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param int $id
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    /**
+     * @param int $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 }

@@ -10,8 +10,8 @@ namespace Joomla\ORM\Action;
 
 class Delete extends AbstractAction
 {
-	public function __invoke($entity)
-	{
-		$this->repository->remove($entity);
-	}
+    public function __invoke($entity)
+    {
+        $this->repository->remove($entity);
+    }
 }

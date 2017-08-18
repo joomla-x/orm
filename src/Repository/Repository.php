@@ -27,238 +27,230 @@ use Joomla\String\Normalise;
  */
 class Repository implements RepositoryInterface
 {
-	/** @var  string  The class of the entity */
-	private $className;
+    /** @var  string  The class of the entity */
+    private $className;
 
-	/** @var DataMapperInterface */
-	private $dataMapper;
+    /** @var DataMapperInterface */
+    private $dataMapper;
 
-	/** @var  UnitOfWorkInterface */
-	private $unitOfWork;
+    /** @var  UnitOfWorkInterface */
+    private $unitOfWork;
 
-	/** @var  array */
-	private $restrictions = [];
+    /** @var  array */
+    private $restrictions = [];
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string               $className   The class of the entity
-	 * @param   DataMapperInterface  $dataMapper  The builder
-	 * @param   UnitOfWorkInterface  $unitOfWork  The UnitOfWork
-	 */
-	public function __construct($className, DataMapperInterface $dataMapper, UnitOfWorkInterface $unitOfWork)
-	{
-		$this->className  = $className;
-		$this->dataMapper = $dataMapper;
-		$this->unitOfWork = $unitOfWork;
-		$this->unitOfWork->registerDataMapper($this->className, $this->dataMapper);
-	}
+    /**
+     * Constructor
+     *
+     * @param   string              $className  The class of the entity
+     * @param   DataMapperInterface $dataMapper The builder
+     * @param   UnitOfWorkInterface $unitOfWork The UnitOfWork
+     */
+    public function __construct($className, DataMapperInterface $dataMapper, UnitOfWorkInterface $unitOfWork)
+    {
+        $this->className  = $className;
+        $this->dataMapper = $dataMapper;
+        $this->unitOfWork = $unitOfWork;
+        $this->unitOfWork->registerDataMapper($this->className, $this->dataMapper);
+    }
 
-	/**
-	 * Find an entity using its id.
-	 *
-	 * getById() is a convenience method, It is equivalent to
-	 * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, $id)->getItem()
-	 *
-	 * @param   mixed $id The id value
-	 *
-	 * @return  object  The requested entity
-	 *
-	 * @throws  EntityNotFoundException  if the entity does not exist
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function getById($id)
-	{
-		$entity = $this->unitOfWork->getEntityRegistry()->getEntity($this->className, $id);
+    /**
+     * Find an entity using its id.
+     *
+     * getById() is a convenience method, It is equivalent to
+     * ->findOne()->with('id', \Joomla\ORM\Operator::EQUAL, $id)->getItem()
+     *
+     * @param   mixed $id The id value
+     *
+     * @return  object  The requested entity
+     *
+     * @throws  EntityNotFoundException  if the entity does not exist
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function getById($id)
+    {
+        $entity = $this->unitOfWork->getEntityRegistry()->getEntity($this->className, $id);
 
-		if (empty($entity))
-		{
-			$entity = $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
-		}
+        if (empty($entity)) {
+            $entity = $this->findOne()->with('id', Operator::EQUAL, $id)->getItem();
+        }
 
-		return $entity;
-	}
+        return $entity;
+    }
 
-	/**
-	 * Find a single entity.
-	 *
-	 * @return  EntityFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entity
-	 */
-	public function findOne()
-	{
-		$finder = $this->dataMapper->findOne();
+    /**
+     * Find a single entity.
+     *
+     * @return  EntityFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entity
+     */
+    public function findOne()
+    {
+        $finder = $this->dataMapper->findOne();
 
-		foreach ($this->restrictions as $filter)
-		{
-			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
-		}
+        foreach ($this->restrictions as $filter) {
+            $finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+        }
 
-		return $finder;
-	}
+        return $finder;
+    }
 
-	/**
-	 * Find multiple entities.
-	 *
-	 * @return  CollectionFinderInterface  The responsible Finder object
-	 *
-	 * @throws  OrmException  if there was an error getting the entities
-	 */
-	public function findAll()
-	{
-		$finder = $this->dataMapper->findAll();
+    /**
+     * Find multiple entities.
+     *
+     * @return  CollectionFinderInterface  The responsible Finder object
+     *
+     * @throws  OrmException  if there was an error getting the entities
+     */
+    public function findAll()
+    {
+        $finder = $this->dataMapper->findAll();
 
-		foreach ($this->restrictions as $filter)
-		{
-			$finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
-		}
+        foreach ($this->restrictions as $filter) {
+            $finder = $finder->with($filter['field'], $filter['op'], $filter['value']);
+        }
 
-		return $finder;
-	}
+        return $finder;
+    }
 
-	/**
-	 * Adds an entity to the repo
-	 *
-	 * @param   object $entity The entity to add
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be added
-	 */
-	public function add($entity)
-	{
-		foreach ($this->restrictions as $preset)
-		{
-			if ($preset['op'] == Operator::EQUAL)
-			{
-				$property = Normalise::toVariable($preset['field']);
-				$entity->$property = $preset['value'];
-			}
-		}
+    /**
+     * Adds an entity to the repo
+     *
+     * @param   object $entity The entity to add
+     *
+     * @return  void
+     *
+     * @throws  OrmException  if the entity could not be added
+     */
+    public function add($entity)
+    {
+        foreach ($this->restrictions as $preset) {
+            if ($preset['op'] == Operator::EQUAL) {
+                $property          = Normalise::toVariable($preset['field']);
+                $entity->$property = $preset['value'];
+            }
+        }
 
-		$this->unitOfWork->scheduleForInsertion($entity);
-	}
+        $this->unitOfWork->scheduleForInsertion($entity);
+    }
 
-	/**
-	 * Deletes an entity from the repo
-	 *
-	 * @param   object $entity The entity to delete
-	 *
-	 * @return  void
-	 *
-	 * @throws  OrmException  if the entity could not be deleted
-	 */
-	public function remove($entity)
-	{
-		$this->unitOfWork->scheduleForDeletion($entity);
-	}
+    /**
+     * Deletes an entity from the repo
+     *
+     * @param   object $entity The entity to delete
+     *
+     * @return  void
+     *
+     * @throws  OrmException  if the entity could not be deleted
+     */
+    public function remove($entity)
+    {
+        $this->unitOfWork->scheduleForDeletion($entity);
+    }
 
-	/**
-	 * Persists all changes
-	 *
-	 * @return void
-	 */
-	public function commit()
-	{
-		$this->unitOfWork->commit();
-	}
+    /**
+     * Persists all changes
+     *
+     * @return void
+     */
+    public function commit()
+    {
+        $this->unitOfWork->commit();
+    }
 
-	/**
-	 * Define a condition.
-	 *
-	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
-	 * @param   mixed  $rValue The right value for the comparision
-	 *
-	 * @return  void
-	 */
-	public function restrictTo($lValue, $op, $rValue)
-	{
-		$this->restrictions[] = [
-			'field' => $lValue,
-			'op'    => $op,
-			'value' => $rValue
-		];
-	}
+    /**
+     * Define a condition.
+     *
+     * @param   mixed  $lValue The left value for the comparision
+     * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants EQUAL or IN
+     * @param   mixed  $rValue The right value for the comparision
+     *
+     * @return  void
+     */
+    public function restrictTo($lValue, $op, $rValue)
+    {
+        $this->restrictions[] = [
+            'field' => $lValue,
+            'op'    => $op,
+            'value' => $rValue,
+        ];
+    }
 
-	/**
-	 * Gets the entity class managed with this repository
-	 *
-	 * @return string The entity class managed with this repository
-	 */
-	public function getEntityClass()
-	{
-		return $this->className;
-	}
+    /**
+     * Gets the entity class managed with this repository
+     *
+     * @return string The entity class managed with this repository
+     */
+    public function getEntityClass()
+    {
+        return $this->className;
+    }
 
-	/**
-	 * Create a new entity
-	 *
-	 * @param   array $row A hash with the properties for the new entity
-	 *
-	 * @return  object
-	 */
-	public function createFromArray(array $row)
-	{
-		$entities = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->castToEntity([$row], $this->className);
+    /**
+     * Create a new entity
+     *
+     * @param   array $row A hash with the properties for the new entity
+     *
+     * @return  object
+     */
+    public function createFromArray(array $row)
+    {
+        $entities = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->castToEntity([$row], $this->className);
 
-		return array_shift($entities);
-	}
+        return array_shift($entities);
+    }
 
-	/**
-	 * Find all entities.
-	 *
-	 * getAll() is a convenience method, It is equivalent to
-	 * ->findAll()->getItems()
-	 *
-	 * @return  object[]  The requested entities
-	 *
-	 * @throws  OrmException  if there was an error getting the entities
-	 */
-	public function getAll()
-	{
-		return $this->findAll()->getItems();
-	}
+    /**
+     * Find all entities.
+     *
+     * getAll() is a convenience method, It is equivalent to
+     * ->findAll()->getItems()
+     *
+     * @return  object[]  The requested entities
+     *
+     * @throws  OrmException  if there was an error getting the entities
+     */
+    public function getAll()
+    {
+        return $this->findAll()->getItems();
+    }
 
-	/**
-	 * Get the meta data for the entity
-	 *
-	 * @return  Entity
-	 */
-	public function getMeta()
-	{
-		$meta = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->getMeta($this->className);
+    /**
+     * Get the meta data for the entity
+     *
+     * @return  Entity
+     */
+    public function getMeta()
+    {
+        $meta = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->getMeta($this->className);
 
-		return $meta;
-	}
+        return $meta;
+    }
 
-	/**
-	 * Change an entities properties
-	 *
-	 * @param   object $entity The entity to change
-	 * @param   array  $data   A hash with the properties for the new entity
-	 *
-	 * @return  void
-	 */
-	public function bind($entity, array $data)
-	{
-		$meta = $this->getMeta();
+    /**
+     * Change an entities properties
+     *
+     * @param   object $entity The entity to change
+     * @param   array  $data   A hash with the properties for the new entity
+     *
+     * @return  void
+     */
+    public function bind($entity, array $data)
+    {
+        $meta = $this->getMeta();
 
-		foreach ($data as $key => $value)
-		{
-			if (is_null($value))
-			{
-				continue;
-			}
+        foreach ($data as $key => $value) {
+            if (is_null($value)) {
+                continue;
+            }
 
-			if (array_key_exists($key, $meta->fields))
-			{
-				$property = $meta->propertyName($key);
-				$entity->{$property} = $value;
-			}
-		}
+            if (array_key_exists($key, $meta->fields)) {
+                $property            = $meta->propertyName($key);
+                $entity->{$property} = $value;
+            }
+        }
 
-		$this->unitOfWork->getEntityRegistry()->getEntityBuilder()->resolve($entity);
-	}
+        $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->resolve($entity);
+    }
 }

@@ -10,6 +10,6 @@ namespace Joomla\ORM\Tests\Mocks;
 
 class Map
 {
-	public $masterId;
-	public $tagId;
+    public $masterId;
+    public $tagId;
 }

@@ -25,57 +25,55 @@ use Psr\Container\ContainerInterface;
  */
 class StorageServiceProvider implements ServiceProviderInterface
 {
-	/**
-	 * Registers a RepositoryFactory with the container
-	 *
-	 * @param   Container $container The DI container
-	 * @param   string    $alias     An optional alias
-	 *
-	 * @return  void
-	 */
-	public function register(Container $container, $alias = null)
-	{
-		$container->set('Repository', [$this, 'createRepositoryFactory'], true, true);
+    /**
+     * Registers a RepositoryFactory with the container
+     *
+     * @param   Container $container The DI container
+     * @param   string    $alias     An optional alias
+     *
+     * @return  void
+     */
+    public function register(Container $container, $alias = null)
+    {
+        $container->set('Repository', [$this, 'createRepositoryFactory'], true, true);
 
-		if (!empty($alias))
-		{
-			$container->alias($alias, 'Repository');
-		}
-	}
+        if (!empty($alias)) {
+            $container->alias($alias, 'Repository');
+        }
+    }
 
-	/**
-	 * Creates a RepositoryFactory
-	 *
-	 * @param   ContainerInterface $container The container
-	 *
-	 * @return  RepositoryFactory
-	 */
-	public function createRepositoryFactory(ContainerInterface $container)
-	{
-		$config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
+    /**
+     * Creates a RepositoryFactory
+     *
+     * @param   ContainerInterface $container The container
+     *
+     * @return  RepositoryFactory
+     */
+    public function createRepositoryFactory(ContainerInterface $container)
+    {
+        $config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
 
-		$configuration = new Configuration;
+        $configuration = new Configuration;
 
-		// Add logger
-		$logger = new DebugStack;
-		$configuration->setSQLLogger($logger);
+        // Add logger
+        $logger = new DebugStack;
+        $configuration->setSQLLogger($logger);
 
-		$connection = DriverManager::getConnection(
-			[
-				'url'     => $config['databaseUrl'],
-				'charset' => 'utf8',
-			],
-			$configuration
-		);
-		$transactor = new DoctrineTransactor($connection);
+        $connection = DriverManager::getConnection(
+            [
+                'url'     => $config['databaseUrl'],
+                'charset' => 'utf8',
+            ],
+            $configuration
+        );
+        $transactor = new DoctrineTransactor($connection);
 
-		$repositoryFactory = new RepositoryFactory($config, $connection, $transactor);
+        $repositoryFactory = new RepositoryFactory($config, $connection, $transactor);
 
-		if ($container->has('dispatcher'))
-		{
-			$repositoryFactory->setDispatcher($container->get('dispatcher'));
-		}
+        if ($container->has('dispatcher')) {
+            $repositoryFactory->setDispatcher($container->get('dispatcher'));
+        }
 
-		return $repositoryFactory;
-	}
+        return $repositoryFactory;
+    }
 }

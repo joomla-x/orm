@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE entity SYSTEM
-    "https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd">
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
 <entity name="Joomla\ORM\Tests\Mocks\User">
 
     <storage>
@@ -10,16 +10,30 @@
     <fields>
         <field name="id" type="id"/>
         <field name="username" type="title"/>
+        <field
+            name="aggregate_root_id"
+            type="foreignkey"
+            entity="User"
+        >
+        </field>
+        <field
+            name="second_aggregate_root_id"
+            type="foreignkey"
+            entity="User"
+        >
+        </field>
     </fields>
 
     <relations>
         <belongsTo
-            name="aggregate_root_id"
+            name="aggregate_root"
             entity="User"
+            reference="aggregate_root_id"
         />
         <belongsTo
-            name="second_aggregate_root_id"
+            name="second_aggregate_root"
             entity="User"
+            reference="second_aggregate_root_id"
         />
     </relations>
 

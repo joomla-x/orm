@@ -17,15 +17,15 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
  */
 class FileStrategy implements StrategyInterface
 {
-	/**
-	 * Locate a definition file
-	 *
-	 * @param   string $filename The name of the XML file
-	 *
-	 * @return  string|null  The path, if found, null else
-	 */
-	public function locate($filename)
-	{
-		return file_exists($filename) ? $filename : null;
-	}
+    /**
+     * Locate a definition file
+     *
+     * @param   string $filename The name of the XML file
+     *
+     * @return  string|null  The path, if found, null else
+     */
+    public function locate($filename)
+    {
+        return file_exists($filename) ? $filename : null;
+    }
 }
