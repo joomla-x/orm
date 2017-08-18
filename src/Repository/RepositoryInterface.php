@@ -116,6 +116,16 @@ interface RepositoryInterface
 	public function getEntityClass();
 
 	/**
+	 * Change an entities properties
+	 *
+	 * @param   object $entity The entity to change
+	 * @param   array  $data   A hash with the properties for the new entity
+	 *
+	 * @return  void
+	 */
+	public function bind($entity, array $data);
+
+	/**
 	 * Create a new entity
 	 *
 	 * @param   array  $row  A hash with the properties for the new entity

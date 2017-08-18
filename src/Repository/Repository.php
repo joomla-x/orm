@@ -232,4 +232,30 @@ class Repository implements RepositoryInterface
 
 		return $meta;
 	}
+
+	/**
+	 * Change an entities properties
+	 *
+	 * @param   object $entity The entity to change
+	 * @param   array  $data   A hash with the properties for the new entity
+	 *
+	 * @return  void
+	 */
+	public function bind($entity, array $data)
+	{
+		$defaults = get_class_vars(get_class($entity));
+
+		foreach ($data as $property => $value)
+		{
+			if (property_exists($entity, $property))
+			{
+				if (is_null($value))
+				{
+					$value = $defaults[$property];
+				}
+
+				$entity->{$property} = $value;
+			}
+		}
+	}
 }

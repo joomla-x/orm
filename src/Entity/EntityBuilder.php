@@ -326,7 +326,7 @@ class EntityBuilder
 		{
 			$entity = new $entityClass;
 
-			foreach (array_merge($meta->fields, $meta->relations['belongsTo']) as $key => $definition)
+			foreach ($meta->fields as $key => $definition)
 			{
 				/** @var Element $definition */
 				$varName = $definition->propertyName($key);
@@ -363,12 +363,12 @@ class EntityBuilder
 				{
 					$property = $reflection->getProperty($varName);
 					$property->setAccessible(true);
-					$property->setValue($entity, $value);
+					$property->setValue($entity, is_null($value) ? $entity->{$varName} : $value);
 				}
 				else
 				{
 					/** @noinspection PhpVariableVariableInspection */
-					$entity->$varName = $value;
+					$entity->{$varName} = $value;
 				}
 			}
 
@@ -418,7 +418,6 @@ class EntityBuilder
 	 */
 	public function reduce($entity)
 	{
-		\NXDebug::_(__METHOD__, '+');
 		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
 		$entityClass        = get_class($entity);
 		$meta               = $this->getMeta($entityClass);
@@ -464,9 +463,13 @@ class EntityBuilder
 		{
 			/** @var BelongsTo $relation */
 			$colIdName     = $relation->colIdName();
+			$varIdName     = $relation->varIdName();
 			$varObjectName = $relation->varObjectName();
 
-			$value = null;
+			// Use the foreign key as default value
+			$value = $entity->{$varIdName};
+
+			// Override the value with the id of the related entity, if any
 			if (!empty($entity->{$varObjectName}))
 			{
 				$value = $idAccessorRegistry->getEntityId($entity->{$varObjectName});
@@ -490,7 +493,6 @@ class EntityBuilder
 
 			$properties[$colIdName] = implode(',', $values);
 		}
-		\NXDebug::_(__METHOD__, '-');
 
 		return $properties;
 	}
