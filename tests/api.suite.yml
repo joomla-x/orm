@@ -1,4 +1,0 @@
-class_name: ApiTester
-modules:
-    enabled:
-        - \Helper\Api

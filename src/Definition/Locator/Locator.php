@@ -15,7 +15,7 @@ use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 final class Locator implements LocatorInterface
 {
@@ -41,6 +41,8 @@ final class Locator implements LocatorInterface
 	 */
 	public function findFile($filename)
 	{
+		$filename = basename(str_replace('\\', '/', $filename));
+
 		foreach ($this->strategies as $strategy)
 		{
 			$path = $strategy->locate($filename);
@@ -52,5 +54,17 @@ final class Locator implements LocatorInterface
 		}
 
 		return null;
+	}
+
+	/**
+	 * Adds a strategy
+	 *
+	 * @param   StrategyInterface $strategy The strategy
+	 *
+	 * @return  void
+	 */
+	public function add(StrategyInterface $strategy)
+	{
+		array_unshift($this->strategies, $strategy);
 	}
 }

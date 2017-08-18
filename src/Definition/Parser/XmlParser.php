@@ -9,6 +9,7 @@
 namespace Joomla\ORM\Definition\Parser;
 
 use Joomla\ORM\Definition\Locator\LocatorInterface;
+use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Exception\InvalidElementException;
 
 /**
@@ -16,9 +17,9 @@ use Joomla\ORM\Exception\InvalidElementException;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
-class XmlParser extends \XMLReader
+class XmlParser extends \XMLReader implements ParserInterface
 {
 	/**
 	 * Parse the entity XML.
@@ -26,7 +27,7 @@ class XmlParser extends \XMLReader
 	 * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
 	 * @param   LocatorInterface $locator   The XML description file locator
 	 *
-	 * @return  Entity
+	 * @return  EntityStructure
 	 */
 	public function parse($callbacks, LocatorInterface $locator)
 	{
@@ -64,7 +65,7 @@ class XmlParser extends \XMLReader
 
 		if (isset($callbacks[$callback]))
 		{
-			call_user_func($callbacks[$callback], $attributes);
+			$attributes = call_user_func($callbacks[$callback], $attributes);
 		}
 
 		if ($hasChildren)

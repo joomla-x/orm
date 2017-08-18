@@ -13,21 +13,26 @@ namespace Joomla\ORM\Definition\Locator\Strategy;
  *
  * @package  Joomla/ORM
  *
- * @since    1.0
+ * @since    __DEPLOY_VERSION__
  */
 class MapStrategy implements StrategyInterface
 {
+	/** @var  string  The root directory */
+	private $root;
+
 	/** @var  array  The map */
 	private $map;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   string $map The map assigning paths to entity names
+	 * @param   string  $root  The root directory for the search
+	 * @param   string  $map   The map assigning paths to entity names
 	 */
-	public function __construct($map)
+	public function __construct($root, $map)
 	{
-		$this->map = $map;
+		$this->root = $root;
+		$this->map  = $map;
 	}
 
 	/**
@@ -39,11 +44,11 @@ class MapStrategy implements StrategyInterface
 	 */
 	public function locate($filename)
 	{
-		$basename = basename($filename);
+		$basename = preg_replace('~\.[^.]+$~', '', basename($filename));
 
 		if (isset($this->map[$basename]))
 		{
-			return $this->map[$basename];
+			return $this->root . '/' . $this->map[$basename];
 		}
 
 		return null;
