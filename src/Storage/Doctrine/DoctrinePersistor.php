@@ -64,8 +64,8 @@ class DoctrinePersistor implements PersistorInterface
 		$data     = $this->builder->reduce($entity);
 		$entityId = $this->entityRegistry->getEntityId($entity);
 
-		try
-		{
+		#try
+		#{
 			$this->connection->insert($this->tableName, $data);
 
 			if (empty($entityId))
@@ -74,11 +74,11 @@ class DoctrinePersistor implements PersistorInterface
 			}
 
 			$this->builder->resolve($entity);
-		}
-		catch (\Exception $e)
-		{
-			throw new OrmException("Entity with id {$entityId} already exists.\n" . $e->getMessage(), 0, $e);
-		}
+		#}
+		#catch (\Exception $e)
+		#{
+		#	throw new OrmException("Entity with id {$entityId} already exists.\n" . $e->getMessage(), 0, $e);
+		#}
 	}
 
 	/**

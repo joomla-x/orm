@@ -12,7 +12,6 @@ class Archive extends AbstractAction
 {
 	public function __invoke($entity)
 	{
-		\NXDebug::_(__METHOD__, '+');
 		$meta = $this->repository->getMeta();
 
 		if (!empty($meta->fieldAliases['state']))
@@ -20,6 +19,5 @@ class Archive extends AbstractAction
 			$property            = $meta->propertyName($meta->fieldAliases['state']);
 			$entity->{$property} = 2;
 		}
-		\NXDebug::_(__METHOD__, '-');
 	}
 }

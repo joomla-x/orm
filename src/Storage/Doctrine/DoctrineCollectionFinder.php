@@ -9,12 +9,14 @@
 namespace Joomla\ORM\Storage\Doctrine;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\SyntaxErrorException;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Event\QueryDatabaseEvent;
+use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Operator;
 use Joomla\ORM\Storage\CollectionFinderInterface;
@@ -207,6 +209,10 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		catch (SyntaxErrorException $e)
 		{
 			throw new InvalidOperatorException($e->getMessage(), 0, $e);
+		}
+		catch (DBALException $e)
+		{
+			throw new EntityNotFoundException();
 		}
 
 		foreach ($this->patterns as $column => $pattern)

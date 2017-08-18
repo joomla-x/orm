@@ -29,7 +29,6 @@ class CheckIn extends AbstractAction
 	 */
 	public function __invoke($entity)
 	{
-		\NXDebug::_(__METHOD__, '+');
 		$meta = $this->repository->getMeta();
 
 		if (!empty($meta->fieldAliases['checked_out_by']))
@@ -55,6 +54,5 @@ class CheckIn extends AbstractAction
 			$property            = $meta->propertyName($meta->fieldAliases['checked_out_time']);
 			$entity->{$property} = null;
 		}
-		\NXDebug::_(__METHOD__, '-');
 	}
 }

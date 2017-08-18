@@ -12,8 +12,6 @@ class Delete extends AbstractAction
 {
 	public function __invoke($entity)
 	{
-		\NXDebug::_(__METHOD__, '+');
 		$this->repository->remove($entity);
-		\NXDebug::_(__METHOD__, '-');
 	}
 }
