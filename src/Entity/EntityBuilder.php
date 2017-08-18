@@ -97,54 +97,6 @@ class EntityBuilder
 	}
 
 	/**
-	 * Locate the description file
-	 *
-	 * @param   string $entityClass The class of the entity
-	 *
-	 * @return  string  The definition file path
-	 */
-	private function locateDescription($entityClass)
-	{
-		$entityName     = preg_replace('~^.*?(\w+)$~', '\1', $entityClass);
-		$definitionFile = $entityName . '.xml';
-		$filename       = $this->locator->findFile($definitionFile);
-
-		if (!is_null($filename))
-		{
-			return $filename;
-		}
-
-		throw new EntityNotDefinedException($entityClass);
-	}
-
-	/**
-	 * Parse the description file
-	 *
-	 * @param   string $filename    The definition file path
-	 * @param   string $entityClass The class of the entity
-	 *
-	 * @return  EntityStructure  The parsed description
-	 */
-	private function parseDescription($filename, $entityClass)
-	{
-		$parser = new XmlParser();
-
-		$parser->open($filename);
-
-		$definition = $parser->parse([
-			'onBeforeEntity'   => [$this, 'prepareEntity'],
-			'onAfterEntity'    => [$this, 'handleEntity'],
-			'onAfterField'     => [$this, 'handleField'],
-			'onBeforeOption'   => [$this, 'prepareOption'],
-			'onAfterOption'    => [$this, 'handleOption'],
-			'onBeforeFieldset' => [$this, 'prepareFieldset'],
-			'onAfterFieldset'  => [$this, 'handleFieldset'],
-		], $this->locator);
-
-		return $definition;
-	}
-
-	/**
 	 * Parser callback for onBeforeEntity event
 	 *
 	 * @internal
@@ -463,11 +415,9 @@ class EntityBuilder
 		{
 			/** @var BelongsTo $relation */
 			$colIdName     = $relation->colIdName();
-			$varIdName     = $relation->varIdName();
 			$varObjectName = $relation->varObjectName();
 
-			// Use the foreign key as default value
-			$value = $entity->{$varIdName};
+			$value = $meta->fields[$colIdName]->default;
 
 			// Override the value with the id of the related entity, if any
 			if (!empty($entity->{$varObjectName}))
@@ -509,6 +459,69 @@ class EntityBuilder
 		$entityClass = get_class($entity);
 		$meta        = $this->getMeta($entityClass);
 		$this->resolveRelations($entity, $meta);
+	}
+
+	public function resolveAlias($alias)
+	{
+		while (isset($this->alias[$alias]) && $this->alias[$alias] != $alias)
+		{
+			$alias = $this->alias[$alias];
+		}
+
+		if (!isset($this->entities[$alias]))
+		{
+			$alias = $this->readDefinition($alias);
+		}
+
+		return $alias;
+	}
+
+	/**
+	 * Locate the description file
+	 *
+	 * @param   string $entityClass The class of the entity
+	 *
+	 * @return  string  The definition file path
+	 */
+	private function locateDescription($entityClass)
+	{
+		$entityName     = preg_replace('~^.*?(\w+)$~', '\1', $entityClass);
+		$definitionFile = $entityName . '.xml';
+		$filename       = $this->locator->findFile($definitionFile);
+
+		if (!is_null($filename))
+		{
+			return $filename;
+		}
+
+		throw new EntityNotDefinedException($entityClass);
+	}
+
+	/**
+	 * Parse the description file
+	 *
+	 * @param   string $filename    The definition file path
+	 * @param   string $entityClass The class of the entity
+	 *
+	 * @return  EntityStructure  The parsed description
+	 */
+	private function parseDescription($filename, $entityClass)
+	{
+		$parser = new XmlParser();
+
+		$parser->open($filename);
+
+		$definition = $parser->parse([
+			'onBeforeEntity'   => [$this, 'prepareEntity'],
+			'onAfterEntity'    => [$this, 'handleEntity'],
+			'onAfterField'     => [$this, 'handleField'],
+			'onBeforeOption'   => [$this, 'prepareOption'],
+			'onAfterOption'    => [$this, 'handleOption'],
+			'onBeforeFieldset' => [$this, 'prepareFieldset'],
+			'onAfterFieldset'  => [$this, 'handleFieldset'],
+		], $this->locator);
+
+		return $definition;
 	}
 
 	/**
@@ -736,21 +749,6 @@ class EntityBuilder
 
 			$entity->{$varObjName} = $objects;
 		}
-	}
-
-	public function resolveAlias($alias)
-	{
-		while (isset($this->alias[$alias]) && $this->alias[$alias] != $alias)
-		{
-			$alias = $this->alias[$alias];
-		}
-
-		if (!isset($this->entities[$alias]))
-		{
-			$alias = $this->readDefinition($alias);
-		}
-
-		return $alias;
 	}
 
 	/**

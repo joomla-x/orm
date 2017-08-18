@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Action;
 
+use Joomla\ORM\Definition\Parser\BelongsTo;
 use Joomla\ORM\Repository\RepositoryInterface;
 use JUser;
 use PEP\Entity\User;
@@ -42,16 +43,21 @@ class CheckIn extends AbstractAction
 
 			$entity->{$property} = 0;
 
-			if (isset($meta->relations['belongsTo'][$meta->fieldAliases['checked_out_by']]))
+			/** @var BelongsTo $relation */
+			foreach ($meta->relations['belongsTo'] as $relation)
 			{
-				$property = $meta->propertyName($meta->relations['belongsTo'][$meta->fieldAliases['checked_out_by']]);
-				$entity->{$property} = null;
+				if ($relation->colIdName() == $meta->fieldAliases['checked_out_by'])
+				{
+					$property = $relation->varObjectName();
+					$entity->{$property} = null;
+					break;
+				}
 			}
 		}
 
 		if (!empty($meta->fieldAliases['checked_out_time']))
 		{
-			$property            = $meta->propertyName($meta->fieldAliases['checked_out_time']);
+			$property = $meta->propertyName($meta->fieldAliases['checked_out_time']);
 			$entity->{$property} = null;
 		}
 	}
