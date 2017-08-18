@@ -8,8 +8,6 @@
 
 namespace Joomla\ORM\Action;
 
-use Joomla\ORM\Definition\Parser\Entity;
-use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Repository\RepositoryInterface;
 use Psr\Container\ContainerInterface;
 

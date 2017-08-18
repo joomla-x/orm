@@ -269,7 +269,7 @@ class EntityRegistry
 	}
 
 	/**
-	 * Unstashes an entity
+	 * Un-stashes an entity
 	 *
 	 * @param   object  $entity  The entity to unstash
 	 *

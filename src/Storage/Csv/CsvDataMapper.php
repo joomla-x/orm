@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Storage\Csv;
 
-use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;

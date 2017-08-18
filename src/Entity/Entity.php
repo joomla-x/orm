@@ -159,7 +159,7 @@ class Entity implements EntityInterface
 	 * @param   string $property The name of the property
 	 * @param   mixed  $value    The value for the property
 	 *
-	 * @return  mixed
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{

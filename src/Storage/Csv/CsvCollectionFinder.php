@@ -8,7 +8,6 @@
 
 namespace Joomla\ORM\Storage\Csv;
 
-use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\InvalidOperatorException;
 use Joomla\ORM\Operator;
@@ -109,20 +108,42 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
-	 * Apply the conditions
+	 * Define the columns to be retrieved.
 	 *
-	 * @param   array $matches The records
+	 * @param   array|string $columns The column names
 	 *
-	 * @return  array
+	 * @return  $this
 	 */
-	private function applyConditions($matches)
+	public function columns($columns)
 	{
-		foreach ($this->conditions as $condition)
+		if (!is_array($columns))
 		{
-			$matches = $this->filter($matches, $condition);
+			$columns = preg_split('~\s*,\s*~', trim($columns));
 		}
 
-		return $matches;
+		$this->columns = $columns;
+
+		return $this;
+	}
+
+	/**
+	 * Define a condition.
+	 *
+	 * @param   mixed  $lValue The left value for the comparision
+	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
+	 * @param   mixed  $rValue The right value for the comparision
+	 *
+	 * @return  $this
+	 */
+	public function with($lValue, $op, $rValue)
+	{
+		$this->conditions[] = [
+			'field' => $lValue,
+			'op'    => $op,
+			'value' => $rValue
+		];
+
+		return $this;
 	}
 
 	/**
@@ -230,6 +251,23 @@ class CsvCollectionFinder implements CollectionFinderInterface
 	}
 
 	/**
+	 * Apply the conditions
+	 *
+	 * @param   array $matches The records
+	 *
+	 * @return  array
+	 */
+	private function applyConditions($matches)
+	{
+		foreach ($this->conditions as $condition)
+		{
+			$matches = $this->filter($matches, $condition);
+		}
+
+		return $matches;
+	}
+
+	/**
 	 * Apply the ordering
 	 *
 	 * @param   array $matches The records
@@ -306,44 +344,5 @@ class CsvCollectionFinder implements CollectionFinderInterface
 		$entities = $this->entityRegistry->getEntityBuilder()->castToEntity($matches, $this->entityClass);
 
 		return $entities;
-	}
-
-	/**
-	 * Define the columns to be retrieved.
-	 *
-	 * @param   array $columns The column names
-	 *
-	 * @return  $this
-	 */
-	public function columns($columns)
-	{
-		if (!is_array($columns))
-		{
-			$columns = preg_split('~\s*,\s*~', trim($columns));
-		}
-
-		$this->columns = $columns;
-
-		return $this;
-	}
-
-	/**
-	 * Define a condition.
-	 *
-	 * @param   mixed  $lValue The left value for the comparision
-	 * @param   string $op     The comparision operator, one of the \Joomla\ORM\Finder\Operator constants
-	 * @param   mixed  $rValue The right value for the comparision
-	 *
-	 * @return  $this
-	 */
-	public function with($lValue, $op, $rValue)
-	{
-		$this->conditions[] = [
-			'field' => $lValue,
-			'op'    => $op,
-			'value' => $rValue
-		];
-
-		return $this;
 	}
 }

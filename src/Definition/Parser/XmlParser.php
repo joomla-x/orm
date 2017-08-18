@@ -27,7 +27,7 @@ class XmlParser extends \XMLReader implements ParserInterface
 	 * @param   Callable[]       $callbacks Hooks for pre- and postprocessing of elements
 	 * @param   LocatorInterface $locator   The XML description file locator
 	 *
-	 * @return  EntityStructure
+	 * @return  Element
 	 */
 	public function parse($callbacks, LocatorInterface $locator)
 	{

@@ -155,7 +155,7 @@ class MappingRepository implements RepositoryInterface
 
 		if (in_array($entityId, $this->map))
 		{
-			throw new OrmException("Entity with id $entityId aleady exists");
+			throw new OrmException("Entity with id $entityId already exists");
 		}
 
 		$map                 = new $mapClass;

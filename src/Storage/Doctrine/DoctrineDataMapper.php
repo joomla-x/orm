@@ -11,7 +11,6 @@ namespace Joomla\ORM\Storage\Doctrine;
 use Doctrine\DBAL\Connection;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\NullDispatcher;
-use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;

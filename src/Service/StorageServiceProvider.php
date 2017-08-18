@@ -14,6 +14,7 @@ use Doctrine\DBAL\Logging\DebugStack;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\ORM\Storage\Doctrine\DoctrineTransactor;
+use Psr\Container\ContainerInterface;
 
 /**
  * Storage Service Provider.
@@ -45,11 +46,11 @@ class StorageServiceProvider implements ServiceProviderInterface
 	/**
 	 * Creates a RepositoryFactory
 	 *
-	 * @param   Container $container The container
+	 * @param   ContainerInterface $container The container
 	 *
 	 * @return  RepositoryFactory
 	 */
-	public function createRepositoryFactory(Container $container)
+	public function createRepositoryFactory(ContainerInterface $container)
 	{
 		$config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
 
@@ -61,8 +62,8 @@ class StorageServiceProvider implements ServiceProviderInterface
 
 		$connection = DriverManager::getConnection(
 			[
-				'url' => $config['databaseUrl'],
-			    'charset' => 'utf8',
+				'url'     => $config['databaseUrl'],
+				'charset' => 'utf8',
 			],
 			$configuration
 		);

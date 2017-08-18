@@ -13,7 +13,6 @@ use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Storage\PersistorInterface;
 use Joomla\String\Normalise;
-use Joomla\Tests\Unit\DumpTrait;
 
 /**
  * Class CsvCollectionPersistor

@@ -565,7 +565,7 @@ class EntityBuilder
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
 
-			#echo "\nHasManyThrough\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
+			#echo "\n HasManyThrough \n field = $field \n varObjName = $varObjName \n colRefName = $colRefName \n";
 
 			// @todo Use entity name instead of uppercase table
 			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
@@ -575,7 +575,7 @@ class EntityBuilder
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 
-			#echo "this.id <-- $mapClass.$colRefName | $mapClass.$relation->joinRef --> $entityClass.id\n";
+			#echo "this.id <-- $mapClass.$colRefName | $mapClass.$relation->joinRef --> $entityClass.id \n";
 			$entity->{$varObjName} = new MappingRepository($repository, $mapRepo, $relation, $this->repositoryFactory->getUnitOfWork());
 		}
 	}
@@ -593,13 +593,13 @@ class EntityBuilder
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
 
-			#echo "\nHasMany\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
+			#echo "\n HasMany \n field = $field \n varObjName = $varObjName \n colRefName = $colRefName \n";
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 			$repository->restrictTo($colRefName, Operator::EQUAL, $entityId);
 
-			#echo "this.id <-- $entityClass.$colRefName\n";
+			#echo "this.id <-- $entityClass.$colRefName \n";
 			$entity->{$varObjName} = $repository;
 		}
 	}
@@ -619,7 +619,7 @@ class EntityBuilder
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
 
-			#echo "\nHasOne\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
+			#echo "\n HasOne \n field = $field \n varObjName = $varObjName \n colRefName = $colRefName \n";
 
 			$entityClass = $this->resolveAlias($relation->entity);
 
@@ -661,7 +661,7 @@ class EntityBuilder
 			$varIdName  = $relation->varIdName();
 			$varObjName = $relation->varObjectName();
 
-			#echo "\nBelongsTo\nfield = $field\nvarIdName = $varIdName\nvarObjName = $varObjName\n";
+			#echo "\n BelongsTo \n field = $field \n varIdName = $varIdName \n varObjName = $varObjName \n";
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);

@@ -8,8 +8,6 @@
 
 namespace Joomla\ORM\Definition\Parser;
 
-use UnexpectedValueException;
-
 /**
  * Class Option
  *
