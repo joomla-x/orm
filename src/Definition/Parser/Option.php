@@ -8,6 +8,8 @@
 
 namespace Joomla\ORM\Definition\Parser;
 
+use UnexpectedValueException;
+
 /**
  * Class Option
  *
@@ -24,6 +26,16 @@ class Option extends Element
 	 */
 	public function __construct($attributes)
 	{
+		if (!isset($attributes['#text']))
+		{
+			$attributes['#text'] = 'unknown';
+			#throw new UnexpectedValueException("Undefined index: #text in " . print_r($attributes, true));
+		}
+		if (!isset($attributes['value']))
+		{
+			$attributes['value'] = 'unknown';
+		}
+
 		$attributes['label'] = $attributes['#text'];
 		unset($attributes['#text']);
 

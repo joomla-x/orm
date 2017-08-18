@@ -13,6 +13,7 @@ use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Definition\Locator\LocatorInterface;
 use Joomla\ORM\Definition\Locator\Strategy\StrategyInterface;
 use Joomla\ORM\Definition\Parser\BelongsTo;
+use Joomla\ORM\Definition\Parser\BelongsToMany;
 use Joomla\ORM\Definition\Parser\Element;
 use Joomla\ORM\Definition\Parser\Entity as EntityStructure;
 use Joomla\ORM\Definition\Parser\Field;
@@ -113,9 +114,13 @@ class EntityBuilder
 		$parser->open($filename);
 
 		$definition = $parser->parse([
-			'onBeforeEntity' => [$this, 'prepareEntity'],
-			'onAfterEntity'  => [$this, 'handleEntity'],
-			'onAfterField'   => [$this, 'handleField'],
+			'onBeforeEntity'   => [$this, 'prepareEntity'],
+			'onAfterEntity'    => [$this, 'handleEntity'],
+			'onAfterField'     => [$this, 'handleField'],
+			'onBeforeOption'   => [$this, 'prepareOption'],
+			'onAfterOption'    => [$this, 'handleOption'],
+			'onBeforeFieldset' => [$this, 'prepareFieldset'],
+			'onAfterFieldset'  => [$this, 'handleFieldset'],
 		], $this->locator);
 
 		return $definition;
@@ -196,6 +201,74 @@ class EntityBuilder
 		}
 
 		$this->reflector->addField($field);
+	}
+
+	/**
+	 * Parser callback for onBeforeOption event
+	 *
+	 * @internal
+	 *
+	 * @param   array $attributes The element attributes
+	 *
+	 * @return  array
+	 */
+	public function prepareOption($attributes)
+	{
+		#echo "<pre>";
+		#echo "Option attributes:\n";
+		#print_r($attributes);
+		#echo "</pre>";
+
+		return $attributes;
+	}
+
+	/**
+	 * Parser callback for onAfterOption event
+	 *
+	 * @internal
+	 *
+	 * @param   EntityStructure $element The data structure
+	 *
+	 * @return  void
+	 */
+	public function handleOption($element)
+	{
+		#echo "<pre>";
+		#echo "Option element:\n";
+		#print_r($element);
+		#echo "</pre>";
+	}
+
+	/**
+	 * Parser callback for onBeforeFieldset event
+	 *
+	 * @internal
+	 *
+	 * @param   array $attributes The element attributes
+	 *
+	 * @return  array
+	 */
+	public function prepareFieldset($attributes)
+	{
+		#echo "Fieldset attributes:\n";
+		#print_r($attributes);
+
+		return $attributes;
+	}
+
+	/**
+	 * Parser callback for onAfterFieldset event
+	 *
+	 * @internal
+	 *
+	 * @param   EntityStructure $element The data structure
+	 *
+	 * @return  void
+	 */
+	public function handleFieldset($element)
+	{
+		#echo "Fieldset element:\n";
+		#print_r($element);
 	}
 
 	/**
@@ -312,8 +385,9 @@ class EntityBuilder
 	 */
 	public function reduce($entity)
 	{
-		$entityClass = get_class($entity);
-		$meta        = $this->getMeta($entityClass);
+		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
+		$entityClass        = get_class($entity);
+		$meta               = $this->getMeta($entityClass);
 
 		$reflection = new \ReflectionClass($entity);
 		$properties = [];
@@ -351,27 +425,36 @@ class EntityBuilder
 			$properties[$colName] = $value;
 		}
 
-		// Only belongsTo relations can have data in this entity
+		// belongsTo relations can have data in this entity
 		foreach ($meta->relations['belongsTo'] as $field => $relation)
 		{
 			/** @var BelongsTo $relation */
-			$colIdName = $relation->colIdName();
-			$varIdName = $relation->varIdName();
+			$colIdName     = $relation->colIdName();
+			$varObjectName = $relation->varObjectName();
 
 			$value = null;
-
-			if (isset($entity->{$varIdName}))
+			if (!empty($entity->{$varObjectName}))
 			{
-				$value = $entity->{$varIdName};
-			}
-			elseif ($reflection->hasProperty($varIdName))
-			{
-				$property = $reflection->getProperty($varIdName);
-				$property->setAccessible(true);
-				$value = $property->getValue($entity);
+				$value = $idAccessorRegistry->getEntityId($entity->{$varObjectName});
 			}
 
 			$properties[$colIdName] = $value;
+		}
+
+		// belongsToMany relations can have data in this entity, too
+		foreach ($meta->relations['belongsToMany'] as $field => $relation)
+		{
+			/** @var BelongsToMany $relation */
+			$colIdName     = $relation->colIdName();
+			$varObjectName = $relation->varObjectName();
+
+			$values = [];
+			foreach ($entity->{$varObjectName} as $relatedObject)
+			{
+				$values[] = $idAccessorRegistry->getEntityId($relatedObject);
+			}
+
+			$properties[$colIdName] = implode(',', $values);
 		}
 
 		return $properties;
@@ -403,6 +486,7 @@ class EntityBuilder
 		$entityId   = $this->repositoryFactory->getIdAccessorRegistry()->getEntityId($entity);
 
 		$this->resolveBelongsTo($meta->relations['belongsTo'], $entity, $reflection);
+		$this->resolveBelongsToMany($meta->relations['belongsToMany'], $entity, $reflection);
 		$this->resolveHasOne($meta->relations['hasOne'], $entity, $entityId);
 		$this->resolveHasMany($meta->relations['hasMany'], $entity, $entityId);
 		$this->resolveHasManyThrough($meta->relations['hasManyThrough'], $entity, $entityId);
@@ -446,6 +530,8 @@ class EntityBuilder
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
 
+			#echo "\nHasManyThrough\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
+
 			// @todo Use entity name instead of uppercase table
 			$mapClass = $this->resolveAlias(ucfirst($relation->joinTable));
 			$mapRepo  = $this->getRepository($mapClass);
@@ -454,6 +540,7 @@ class EntityBuilder
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 
+			#echo "this.id <-- $mapClass.$colRefName | $mapClass.$relation->joinRef --> $entityClass.id\n";
 			$entity->{$varObjName} = new MappingRepository($repository, $mapRepo, $relation, $this->repositoryFactory->getUnitOfWork());
 		}
 	}
@@ -471,10 +558,13 @@ class EntityBuilder
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
 
+			#echo "\nHasMany\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
+
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
 			$repository->restrictTo($colRefName, Operator::EQUAL, $entityId);
 
+			#echo "this.id <-- $entityClass.$colRefName\n";
 			$entity->{$varObjName} = $repository;
 		}
 	}
@@ -493,6 +583,8 @@ class EntityBuilder
 			/** @var HasOne $relation */
 			$varObjName = $relation->varObjectName();
 			$colRefName = $relation->colReferenceName();
+
+			#echo "\nHasOne\nfield = $field\nvarObjName = $varObjName\ncolRefName = $colRefName\n";
 
 			$entityClass = $this->resolveAlias($relation->entity);
 
@@ -515,6 +607,7 @@ class EntityBuilder
 				}
 			}
 
+			#echo "this.id <-- $entityClass.$colRefName\n";
 			$entity->{$varObjName} = $object;
 		}
 	}
@@ -529,8 +622,11 @@ class EntityBuilder
 		foreach ($relations as $field => $relation)
 		{
 			/** @var BelongsTo $relation */
+			$colIdName  = $relation->colIdName();
 			$varIdName  = $relation->varIdName();
 			$varObjName = $relation->varObjectName();
+
+			#echo "\nBelongsTo\nfield = $field\nvarIdName = $varIdName\nvarObjName = $varObjName\n";
 
 			$entityClass = $this->resolveAlias($relation->entity);
 			$repository  = $this->getRepository($entityClass);
@@ -544,7 +640,7 @@ class EntityBuilder
 			else
 			{
 				/** @noinspection PhpVariableVariableInspection */
-				$objectId = $entity->$varIdName;
+				$objectId = $entity->{$varIdName};
 			}
 
 			try
@@ -555,8 +651,53 @@ class EntityBuilder
 			{
 				$object = null;
 			}
+			#echo "this.$colIdName --> $entityClass.id\n";
 
 			$entity->{$varObjName} = $object;
+		}
+	}
+
+	/**
+	 * @param BelongsToMany[]  $relations
+	 * @param object           $entity
+	 * @param \ReflectionClass $reflection
+	 */
+	private function resolveBelongsToMany($relations, $entity, $reflection)
+	{
+		foreach ($relations as $field => $relation)
+		{
+			/** @var BelongsToMany $relation */
+			$colIdName  = $relation->colIdName();
+			$varIdName  = $relation->varIdName();
+			$varObjName = $relation->varObjectName();
+
+			$entityClass = $this->resolveAlias($relation->entity);
+			$repository  = $this->getRepository($entityClass);
+
+			if ($reflection->hasProperty($varIdName))
+			{
+				$property = $reflection->getProperty($varIdName);
+				$property->setAccessible(true);
+				$objectIds = $property->getValue($entity);
+			}
+			else
+			{
+				/** @noinspection PhpVariableVariableInspection */
+				$objectIds = $entity->{$varIdName};
+			}
+
+			try
+			{
+				$objects = !empty($objectIds) ? $repository->findAll()
+				                                           ->with('id', Operator::IN, explode(',', $objectIds))
+				                                           ->getItems() : null;
+			}
+			catch (EntityNotFoundException $e)
+			{
+				$objects = [];
+			}
+
+			$entity->{$varObjName} = $objects;
 		}
 	}
 

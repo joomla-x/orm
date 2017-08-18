@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Repository;
 
+use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Storage\CollectionFinderInterface;
@@ -122,4 +123,11 @@ interface RepositoryInterface
 	 * @return  object
 	 */
 	public function createFromArray(array $row);
+
+	/**
+	 * Get the meta data for the entity
+	 *
+	 * @return  Entity
+	 */
+	public function getMeta();
 }

@@ -24,7 +24,7 @@ class BelongsTo extends Relation
 	 */
 	public function varIdName()
 	{
-		return $this->propertyName($this->name);
+		return $this->propertyName($this->reference);
 	}
 
 	/**
@@ -44,6 +44,6 @@ class BelongsTo extends Relation
 	 */
 	public function colIdName()
 	{
-		return $this->columnName($this->name);
+		return $this->columnName($this->reference);
 	}
 }

@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Repository;
 
+use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Definition\Parser\HasManyThrough;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
@@ -238,7 +239,7 @@ class MappingRepository implements RepositoryInterface
 	{
 		$this->map = $this->mapRepository
 			->findAll()
-			->columns($this->relation->colJoinName())
+			->columns([$this->relation->colJoinName()])
 			->getItems();
 	}
 
@@ -267,5 +268,15 @@ class MappingRepository implements RepositoryInterface
 	public function createFromArray(array $row)
 	{
 		return $this->entityRepository->createFromArray($row);
+	}
+
+	/**
+	 * Get the meta data for the entity
+	 *
+	 * @return  Entity
+	 */
+	public function getMeta()
+	{
+		return $this->entityRepository->getMeta();
 	}
 }

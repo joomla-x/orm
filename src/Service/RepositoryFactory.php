@@ -10,13 +10,13 @@ namespace Joomla\ORM\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use Joomla\Event\DispatcherAwareInterface;
 use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Event\NullDispatcher;
 use Joomla\ORM\Definition\Locator\Locator;
 use Joomla\ORM\Definition\Locator\Strategy\RecursiveDirectoryStrategy;
 use Joomla\ORM\Entity\EntityBuilder;
 use Joomla\ORM\Entity\EntityRegistry;
-use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
 use Joomla\ORM\Repository\Repository;
 use Joomla\ORM\Repository\RepositoryInterface;
@@ -191,6 +191,7 @@ class RepositoryFactory
 	 */
 	private function createDataMapper($entityClass)
 	{
+		/** @var DataMapperInterface $dataMapper */
 		$dataMapperClass = isset($this->config['dataMapper']) ? $this->config['dataMapper'] : DoctrineDataMapper::class;
 
 		$meta = $this->builder->getMeta($entityClass);
@@ -203,38 +204,26 @@ class RepositoryFactory
 		switch ($dataMapperClass)
 		{
 			case CsvDataMapper::class:
-				if (!isset($this->connections[CsvDataGateway::class]))
-				{
-					$this->connections[CsvDataGateway::class] = new CsvDataGateway($this->config['dataPath']);
-				}
+				$connectionClass = CsvDataGateway::class;
 
-				$dataMapper = new CsvDataMapper(
-					$this->connections[CsvDataGateway::class],
-					$entityClass,
-					$meta->storage['table'],
-					$this->entityRegistry
-				);
-				break;
-
-			case DoctrineDataMapper::class:
-				if (!isset($this->connections[Connection::class]))
-				{
-					$this->connections[Connection::class] = DriverManager::getConnection(['url' => $this->config['databaseUrl']]);
-				}
-
-				$dataMapper = new DoctrineDataMapper(
-					$this->connections[Connection::class],
-					$entityClass,
-					$meta->storage['table'],
-					$this->entityRegistry
-				);
-
-				$dataMapper->setDispatcher($this->getDispatcher());
 				break;
 
 			default:
-				throw new OrmException("No data mapper '$dataMapperClass' for '$entityClass'");
+				$connectionClass = Connection::class;
+
 				break;
+		}
+
+		$dataMapper = new $dataMapperClass(
+			$this->getConnection($connectionClass),
+			$entityClass,
+			$meta->storage['table'],
+			$this->entityRegistry
+		);
+
+		if ($dataMapper instanceof DispatcherAwareInterface)
+		{
+			$dataMapper->setDispatcher($this->getDispatcher());
 		}
 
 		return $dataMapper;
@@ -260,7 +249,7 @@ class RepositoryFactory
 	 *
 	 * @param   string  $type Class name of the connection
 	 *
-	 * @return  \Doctrine\DBAL\Driver\Connection|CsvDataGateway
+	 * @return  \Doctrine\DBAL\Connection|CsvDataGateway
 	 */
 	public function getConnection($type = null)
 	{

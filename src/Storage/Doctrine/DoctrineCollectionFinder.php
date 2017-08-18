@@ -88,7 +88,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 	 */
 	public function columns($columns)
 	{
-		if (!is_array($columns))
+		if (is_string($columns))
 		{
 			$columns = preg_split('~\s*,\s*~', trim($columns));
 		}
@@ -135,6 +135,7 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 				return $this;
 
 			case Operator::IN:
+				/** @var array $rValue */
 				$lValue = "$lValue IN (?" . str_repeat(',?', count($rValue) - 1) . ")";
 				break;
 
@@ -188,9 +189,12 @@ class DoctrineCollectionFinder implements CollectionFinderInterface
 		$builder = $this->applyConditions($builder);
 		$builder = $this->applyOrdering($builder);
 
-		$builder
-			->setMaxResults($count)
-			->setFirstResult($start);
+		if (!is_null($count))
+		{
+			$builder
+				->setMaxResults($count)
+				->setFirstResult($start);
+		}
 
 		$this->dispatcher->dispatch(new QueryDatabaseEvent($this->entityClass, $builder));
 

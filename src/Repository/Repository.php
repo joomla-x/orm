@@ -8,6 +8,7 @@
 
 namespace Joomla\ORM\Repository;
 
+use Joomla\ORM\Definition\Parser\Entity;
 use Joomla\ORM\Exception\EntityNotFoundException;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\Operator;
@@ -218,5 +219,17 @@ class Repository implements RepositoryInterface
 	public function getAll()
 	{
 		return $this->findAll()->getItems();
+	}
+
+	/**
+	 * Get the meta data for the entity
+	 *
+	 * @return  Entity
+	 */
+	public function getMeta()
+	{
+		$meta = $this->unitOfWork->getEntityRegistry()->getEntityBuilder()->getMeta($this->className);
+
+		return $meta;
 	}
 }

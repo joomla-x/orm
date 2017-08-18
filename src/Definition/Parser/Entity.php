@@ -23,19 +23,14 @@ class Entity extends Element
 {
 	/** @var  string  Fully qualified class name of the entity */
 	public $class;
-
 	/** @var  string  Type of the entity (class name with namespace) */
 	public $name;
-
 	/** @var  string  The role of the entity */
 	public $role = 'default';
-
 	/** @var  string  Parent type */
 	public $extends;
-
 	/** @var  string  Name(s) of the primary key column(s) */
 	public $primary = 'id';
-
 	/** @var Relation[][]  List of relations */
 	public $relations = [
 		'belongsTo'      => [],
@@ -44,13 +39,10 @@ class Entity extends Element
 		'hasMany'        => [],
 		'hasManyThrough' => []
 	];
-
 	/** @var  Field[]  List of fields */
 	public $fields = [];
-
 	/** @var array */
 	public $storage = null;
-
 	private $entityDtd = 'https://raw.githubusercontent.com/nibralab/joomla-architecture/master/code/Joomla/ORM/Definition/entity.dtd';
 
 	/**
@@ -196,8 +188,8 @@ class Entity extends Element
 	}
 
 	/**
-	 * @param   DOMDocument $xml The XML document
-	 * @param   Field       $f   The field's XML
+	 * @param  DOMDocument $xml The XML document
+	 * @param  Field       $f   The field's XML
 	 *
 	 * @return DOMElement
 	 */
@@ -236,8 +228,8 @@ class Entity extends Element
 
 	/**
 	 * @param   DOMDocument $xml The XML document
-	 * @param   string        $key
-	 * @param   string        $value
+	 * @param string        $key
+	 * @param string        $value
 	 *
 	 * @return DOMElement
 	 */

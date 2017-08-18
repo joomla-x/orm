@@ -59,7 +59,13 @@ class StorageServiceProvider implements ServiceProviderInterface
 		$logger = new DebugStack;
 		$configuration->setSQLLogger($logger);
 
-		$connection = DriverManager::getConnection(['url' => $config['databaseUrl']], $configuration);
+		$connection = DriverManager::getConnection(
+			[
+				'url' => $config['databaseUrl'],
+			    'charset' => 'utf8',
+			],
+			$configuration
+		);
 		$transactor = new DoctrineTransactor($connection);
 
 		$repositoryFactory = new RepositoryFactory($config, $connection, $transactor);
