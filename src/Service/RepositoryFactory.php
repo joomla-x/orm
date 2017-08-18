@@ -113,8 +113,6 @@ class RepositoryFactory
 			}
 		}
 
-		$this->unitOfWork->registerDataMapper($entityClass, $dataMapper);
-
 		return new Repository($entityClass, $dataMapper, $this->unitOfWork);
 	}
 

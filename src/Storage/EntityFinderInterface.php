@@ -43,7 +43,7 @@ interface EntityFinderInterface
 	/**
 	 * Fetch the entity
 	 *
-	 * @return  EntityInterface
+	 * @return  mixed
 	 *
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */

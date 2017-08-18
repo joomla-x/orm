@@ -243,17 +243,18 @@ class Repository implements RepositoryInterface
 	 */
 	public function bind($entity, array $data)
 	{
-		$defaults = get_class_vars(get_class($entity));
+		$meta = $this->getMeta();
 
-		foreach ($data as $property => $value)
+		foreach ($data as $key => $value)
 		{
-			if (property_exists($entity, $property))
+			if (is_null($value))
 			{
-				if (is_null($value))
-				{
-					$value = $defaults[$property];
-				}
+				continue;
+			}
 
+			if (array_key_exists($key, $meta->fields))
+			{
+				$property = $meta->propertyName($key);
 				$entity->{$property} = $value;
 			}
 		}

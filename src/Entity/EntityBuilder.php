@@ -401,6 +401,13 @@ class EntityBuilder
 						$value = json_encode($value);
 						break;
 
+					case 'datetime':
+						if ($value == '0000-00-00 00:00:00')
+						{
+							$value = '1001-01-01 00:00:00';
+						}
+						break;
+
 					default:
 						// Leave the value alone
 						break;

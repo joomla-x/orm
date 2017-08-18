@@ -23,7 +23,7 @@ class DoctrineEntityFinder extends DoctrineCollectionFinder implements EntityFin
 	/**
 	 * Fetch the entity
 	 *
-	 * @return  object
+	 * @return  mixed
 	 *
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */

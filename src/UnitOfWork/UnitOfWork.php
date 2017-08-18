@@ -149,7 +149,8 @@ class UnitOfWork implements UnitOfWorkInterface
 	 */
 	public function registerDataMapper($className, DataMapperInterface $dataMapper)
 	{
-		$this->dataMappers[$className] = $dataMapper;
+		$index = strtolower($className);
+		$this->dataMappers[$index] = $dataMapper;
 	}
 
 	/**
@@ -291,12 +292,14 @@ class UnitOfWork implements UnitOfWorkInterface
 	 */
 	public function getDataMapper($className)
 	{
-		if (!isset($this->dataMappers[$className]))
+		$index = strtolower($className);
+
+		if (!isset($this->dataMappers[$index]))
 		{
 			throw new \RuntimeException("No data mapper for $className");
 		}
 
-		return $this->dataMappers[$className];
+		return $this->dataMappers[$index];
 	}
 
 	/**

@@ -23,7 +23,7 @@ class CsvEntityFinder extends CsvCollectionFinder implements EntityFinderInterfa
 	/**
 	 * Gets the entity
 	 *
-	 * @return  object  The requested item
+	 * @return  mixed  The requested item
 	 * @throws  EntityNotFoundException  if the specified entity does not exist.
 	 */
 	public function getItem()
