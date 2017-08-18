@@ -38,10 +38,10 @@ class EntityReflector
 	{
 		$this->entity = $entity;
 
-		$this->fields = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'fields');
+		$this->fields = new \ReflectionProperty(entity::class, 'fields');
 		$this->fields->setAccessible(true);
 
-		$this->relationHandlers = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'relationHandlers');
+		$this->relationHandlers = new \ReflectionProperty(entity::class, 'relationHandlers');
 		$this->relationHandlers->setAccessible(true);
 	}
 
@@ -80,9 +80,9 @@ class EntityReflector
 		$tmp[$field->name] = $field;
 		$this->fields->setValue($this->entity, $tmp);
 
-		if ($field->type == 'id')
+		if ($field->role == 'id')
 		{
-			$key = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'key');
+			$key = new \ReflectionProperty(Entity::class, 'key');
 			$key->setAccessible(true);
 			$key->setValue($this->entity, $field->name);
 		}
@@ -112,7 +112,7 @@ class EntityReflector
 	 */
 	public function setDefinition(EntityStructure $definition)
 	{
-		$tmp = new \ReflectionProperty('Joomla\ORM\Entity\Entity', 'definition');
+		$tmp = new \ReflectionProperty(entity::class, 'definition');
 		$tmp->setAccessible(true);
 		$tmp->setValue($this->entity, $definition);
 	}

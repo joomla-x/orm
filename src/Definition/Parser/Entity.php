@@ -41,6 +41,18 @@ class Entity extends Element
 	];
 	/** @var  Field[]  List of fields */
 	public $fields = [];
+
+	/**
+	 * Field name aliases
+	 *
+	 * Map of unified column name => real column name as defined per the fields role attribute.
+	 * If a field's column name equals a unified field name and no role is given,
+	 * it is assumed that the field has that special meaning.
+	 *
+	 * @var string[]
+	 */
+	public $fieldAliases = [];
+
 	/** @var array */
 	public $storage = null;
 	private $entityDtd = 'https://raw.githubusercontent.com/nibralab/joomla-architecture/master/code/Joomla/ORM/Definition/entity.dtd';

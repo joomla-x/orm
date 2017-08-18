@@ -23,6 +23,12 @@ class Field extends Element
 	/** @var  string  The data type */
 	public $type;
 
+	/** @var  string  field's role (i.e., special meaning) */
+	public $role = null;
+
+	/** @var  string  The input control */
+	public $input;
+
 	/** @var  array  A list of validation rules */
 	public $validation = [];
 

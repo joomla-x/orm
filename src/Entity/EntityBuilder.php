@@ -39,7 +39,23 @@ use Joomla\ORM\Service\RepositoryFactory;
  */
 class EntityBuilder
 {
-	use DispatcherAwareTrait;
+	private $special = [
+		'id'               => 'id',
+		'name'             => 'title',
+		'title'            => 'title',
+		'state'            => 'state',
+		'ordering'         => 'ordering',
+		'checked_out'      => 'checked_out_by',
+		'checked_out_time' => 'checked_out_time',
+		'created_by'       => 'created_by',
+		'created_time'     => 'created_time',
+		'modified_by'      => 'modified_by',
+		'modified_time'    => 'modified_time',
+		'hits'             => 'hits',
+		'clicks'           => 'hits',
+	];
+
+	private $fieldAliases = [];
 
 	/** @var  LocatorInterface  The XML definition file locator */
 	private $locator;
@@ -56,8 +72,10 @@ class EntityBuilder
 	/** @var  EntityReflector  Reflector to manipulate the entity */
 	private $reflector;
 
-	/** @var array */
+	/** @var array Entity aliases */
 	private $alias = [];
+
+	use DispatcherAwareTrait;
 
 	/**
 	 * Constructor
@@ -137,6 +155,7 @@ class EntityBuilder
 	 */
 	public function prepareEntity($attributes)
 	{
+		$this->fieldAliases  = [];
 		$attributes['class'] = $attributes['name'];
 		$attributes['name']  = preg_replace('~^.*?(\w+)$~', '\1', $attributes['class']);
 		$this->prefix        = 'COM_' . strtoupper($attributes['name']) . '_FIELD_';
@@ -155,6 +174,7 @@ class EntityBuilder
 	 */
 	public function handleEntity($element)
 	{
+		$element->fieldAliases = $this->fieldAliases;
 	}
 
 	/**
@@ -198,6 +218,19 @@ class EntityBuilder
 		if (!isset($field->hint))
 		{
 			$field->hint = $prefix . '_HINT';
+		}
+
+		if (!isset($field->role))
+		{
+			if (isset($this->special[$field->name]))
+			{
+				$field->role = $this->special[$field->name];
+			}
+		}
+
+		if (isset($field->role))
+		{
+			$this->fieldAliases[$field->role] = $field->name;
 		}
 
 		$this->reflector->addField($field);
@@ -385,6 +418,7 @@ class EntityBuilder
 	 */
 	public function reduce($entity)
 	{
+		\NXDebug::_(__METHOD__, '+');
 		$idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
 		$entityClass        = get_class($entity);
 		$meta               = $this->getMeta($entityClass);
@@ -456,6 +490,7 @@ class EntityBuilder
 
 			$properties[$colIdName] = implode(',', $values);
 		}
+		\NXDebug::_(__METHOD__, '-');
 
 		return $properties;
 	}
@@ -726,8 +761,7 @@ class EntityBuilder
 
 		if (is_array($key))
 		{
-			$getter = function ($entity) use ($key)
-			{
+			$getter = function ($entity) use ($key) {
 				$id = [];
 				foreach ($key as $property)
 				{
@@ -736,8 +770,7 @@ class EntityBuilder
 
 				return $id;
 			};
-			$setter = function ($entity, $id) use ($key)
-			{
+			$setter = function ($entity, $id) use ($key) {
 				foreach ($key as $property)
 				{
 					$entity->{$property} = $id[$property];
