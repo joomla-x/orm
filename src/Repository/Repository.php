@@ -258,5 +258,7 @@ class Repository implements RepositoryInterface
 				$entity->{$property} = $value;
 			}
 		}
+
+		$this->unitOfWork->getEntityRegistry()->getEntityBuilder()->resolve($entity);
 	}
 }

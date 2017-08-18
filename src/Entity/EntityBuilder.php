@@ -397,6 +397,14 @@ class EntityBuilder
 						$value = (integer) $value;
 						break;
 
+					case 'float':
+						$value = (float) $value;
+						break;
+
+					case 'boolean':
+						$value = (integer) in_array($value, ['true', 'yes', 'on']);
+						break;
+
 					case 'json':
 						$value = json_encode($value);
 						break;
@@ -443,9 +451,12 @@ class EntityBuilder
 			$varObjectName = $relation->varObjectName();
 
 			$values = [];
-			foreach ($entity->{$varObjectName} as $relatedObject)
+			if (isset($entity->{$varObjectName}))
 			{
-				$values[] = $idAccessorRegistry->getEntityId($relatedObject);
+				foreach ($entity->{$varObjectName} as $relatedObject)
+				{
+					$values[] = $idAccessorRegistry->getEntityId($relatedObject);
+				}
 			}
 
 			$properties[$colIdName] = implode(',', $values);
@@ -743,11 +754,16 @@ class EntityBuilder
 				$objectIds = $entity->{$varIdName};
 			}
 
+			if (!is_array($objectIds))
+			{
+				$objectIds = explode(',', $objectIds);
+			}
+
 			try
 			{
-				$objects = !empty($objectIds) ? $repository->findAll()
-				                                           ->with('id', Operator::IN, explode(',', $objectIds))
-				                                           ->getItems() : null;
+				$objects   = !empty($objectIds) ? $repository->findAll()
+				                                             ->with('id', Operator::IN, $objectIds)
+				                                             ->getItems() : null;
 			}
 			catch (EntityNotFoundException $e)
 			{
