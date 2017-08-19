@@ -8,7 +8,7 @@ trait DataTrait
 {
     protected function restoreData($tables = [])
     {
-        $dataDir  = realpath(__DIR__ . '/ORM/data');
+        $dataDir  = realpath(__DIR__ . '/data');
         $database = $dataDir . '/sqlite.test.db';
 
         $connection = DriverManager::getConnection(['url' => 'sqlite:///' . $database]);

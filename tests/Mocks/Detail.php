@@ -13,5 +13,5 @@ class Detail
     public $id;
     public $field1;
     public $field2;
-    public $masterId = 0;
+    public $masterId;
 }

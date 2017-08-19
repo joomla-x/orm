@@ -661,7 +661,6 @@ class EntityBuilder
      */
     public function reduce($entity)
     {
-        $idAccessorRegistry = $this->repositoryFactory->getIdAccessorRegistry();
         $entityClass        = get_class($entity);
         $meta               = $this->getMeta($entityClass);
 
@@ -710,38 +709,6 @@ class EntityBuilder
             }
 
             $properties[$colName] = $value;
-        }
-
-        // belongsTo relations can have data in this entity
-        foreach ($meta->relations['belongsTo'] as $field => $relation) {
-            /** @var BelongsTo $relation */
-            $colIdName     = $relation->colIdName();
-            $varObjectName = $relation->varObjectName();
-
-            $value = $meta->fields[$colIdName]->default;
-
-            // Override the value with the id of the related entity, if any
-            if (!empty($entity->{$varObjectName})) {
-                $value = $idAccessorRegistry->getEntityId($entity->{$varObjectName});
-            }
-
-            $properties[$colIdName] = $value;
-        }
-
-        // belongsToMany relations can have data in this entity, too
-        foreach ($meta->relations['belongsToMany'] as $field => $relation) {
-            /** @var BelongsToMany $relation */
-            $colIdName     = $relation->colIdName();
-            $varObjectName = $relation->varObjectName();
-
-            $values = [];
-            if (isset($entity->{$varObjectName})) {
-                foreach ($entity->{$varObjectName} as $relatedObject) {
-                    $values[] = $idAccessorRegistry->getEntityId($relatedObject);
-                }
-            }
-
-            $properties[$colIdName] = implode(',', $values);
         }
 
         return $properties;

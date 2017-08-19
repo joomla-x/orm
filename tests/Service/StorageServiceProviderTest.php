@@ -10,12 +10,14 @@ use PHPUnit\Framework\TestCase;
 
 class StorageServiceProviderTest extends TestCase
 {
+    private $configFile = JPATH_ROOT . '/tests/data/entities.doctrine.ini';
+
     /**
      * @testdox The StorageServiceProvider implements the ServiceProviderInterface
      */
     public function testTheStorageServiceProviderImplementsTheServiceProviderInterface()
     {
-        $this->assertInstanceOf(ServiceProviderInterface::class, new StorageServiceProvider());
+        $this->assertInstanceOf(ServiceProviderInterface::class, new StorageServiceProvider($this->configFile));
     }
 
     /**
@@ -25,7 +27,7 @@ class StorageServiceProviderTest extends TestCase
     {
         $container = new Container();
 
-        $service = new StorageServiceProvider();
+        $service = new StorageServiceProvider($this->configFile);
         $service->register($container);
 
         $this->assertInstanceOf(RepositoryFactory::class, $container->get('Repository'));
@@ -38,7 +40,7 @@ class StorageServiceProviderTest extends TestCase
     {
         $container = new Container();
 
-        $service = new StorageServiceProvider();
+        $service = new StorageServiceProvider($this->configFile);
         $service->register($container, 'unit');
 
         $this->assertInstanceOf(RepositoryFactory::class, $container->get('unit'));

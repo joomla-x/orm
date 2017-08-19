@@ -161,7 +161,7 @@ class EntityBuilderTest extends TestCase
 
         $this->assertTrue(is_array($meta->relations));
         $this->assertArrayHasKey('belongsTo', $meta->relations);
-        $this->assertArrayHasKey('parent_id', $meta->relations['belongsTo']);
+        $this->assertArrayHasKey('parent', $meta->relations['belongsTo']);
         $this->assertArrayHasKey('hasMany', $meta->relations);
         $this->assertArrayHasKey('children', $meta->relations['hasMany']);
     }

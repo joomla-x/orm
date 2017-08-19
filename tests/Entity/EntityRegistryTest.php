@@ -13,6 +13,7 @@ use Joomla\ORM\Entity\EntityRegistry;
 use Joomla\ORM\Entity\EntityStates;
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
+use Joomla\ORM\Tests\Mocks\Bar;
 use Joomla\ORM\Tests\Mocks\User;
 use PHPUnit\Framework\TestCase;
 
@@ -47,6 +48,7 @@ class EntityRegistryTest extends TestCase
      */
     public function setUp()
     {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|EntityBuilder $builder */
         $builder            = $this->createMock(EntityBuilder::class);
         $idAccessorRegistry = new IdAccessorRegistry();
         $idAccessorRegistry->registerIdAccessors(
@@ -79,7 +81,7 @@ class EntityRegistryTest extends TestCase
     /**
      * Tests checking if an entity is still marked as registered after making changes to it
      */
-    public function testCheckingIfEntityIsRegisteredAfterMakingChangesToIt()
+    public function testEntityIsRegisteredAfterMakingChangesToIt()
     {
         $this->entityRegistry->registerEntity($this->entity1);
         $this->entity1->setUsername("blah");
@@ -89,7 +91,7 @@ class EntityRegistryTest extends TestCase
     /**
      * Tests checking if an entity is registered without registering an Id getter
      */
-    public function testCheckingIfEntityIsRegisteredWithoutRegisteringIdGetter()
+    public function testEntityIsRegisteredWithoutRegisteringIdGetter()
     {
         $entity = $this->getMockBuilder(User::class)
                        ->disableOriginalConstructor()
@@ -125,6 +127,8 @@ class EntityRegistryTest extends TestCase
         });
         $this->entityRegistry->clear();
         $this->entityRegistry->runAggregateRootCallbacks($this->entity2);
+
+        $this->assertEquals('', '');
     }
 
     /**
@@ -137,6 +141,8 @@ class EntityRegistryTest extends TestCase
         });
         $this->entityRegistry->deregisterEntity($this->entity2);
         $this->entityRegistry->runAggregateRootCallbacks($this->entity2);
+
+        $this->assertEquals('', '');
     }
 
     /**
@@ -156,11 +162,8 @@ class EntityRegistryTest extends TestCase
     public function testDeregisteringEntityWithoutRegisteringIdGetter()
     {
         $this->expectException(OrmException::class);
-        $entity = $this->getMockBuilder(User::class)
-                       ->disableOriginalConstructor()
-                       ->setMockClassName("Foo")
-                       ->getMock()
-        ;
+        $entity = new Bar();
+
         $this->entityRegistry->setState($entity, EntityStates::REGISTERED);
         $this->entityRegistry->deregisterEntity($entity);
     }
@@ -231,11 +234,8 @@ class EntityRegistryTest extends TestCase
     public function testRegisteringEntityWithoutRegisteringIdGetter()
     {
         $this->expectException(OrmException::class);
-        $entity = $this->getMockBuilder(User::class)
-                       ->disableOriginalConstructor()
-                       ->setMockClassName("Foo")
-                       ->getMock()
-        ;
+        $entity = new Bar();
+
         $this->entityRegistry->registerEntity($entity);
     }
 

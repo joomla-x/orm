@@ -10,6 +10,7 @@ namespace Joomla\ORM\Tests;
 
 use Joomla\ORM\Exception\OrmException;
 use Joomla\ORM\IdAccessorRegistry;
+use Joomla\ORM\Tests\Mocks\Bar;
 use Joomla\ORM\Tests\Mocks\Extra;
 use Joomla\ORM\Tests\Mocks\Foo;
 use Joomla\ORM\Tests\Mocks\User;
@@ -71,11 +72,8 @@ class IdAccessorRegistryTest extends TestCase
     public function testGettingEntityIdWithoutRegisteringGetter()
     {
         $this->expectException(OrmException::class);
-        $entity = $this->getMockBuilder(User::class)
-                       ->disableOriginalConstructor()
-                       ->setMockClassName("Foo")
-                       ->getMock()
-        ;
+        $entity = new Bar();
+
         $this->registry->getEntityId($entity);
     }
 
@@ -95,10 +93,11 @@ class IdAccessorRegistryTest extends TestCase
      */
     public function testReflectionAccessors()
     {
-        $this->registry->registerReflectionIdAccessors(Foo::class, "id");
-        $foo = new Foo();
-        $this->registry->setEntityId($foo, 24);
-        $this->assertEquals(24, $this->registry->getEntityId($foo));
+        $this->registry->registerReflectionIdAccessors(Bar::class, "bar_id");
+        $bar = new Bar();
+
+        $this->registry->setEntityId($bar, 24);
+        $this->assertEquals(24, $this->registry->getEntityId($bar));
     }
 
     /**
@@ -168,11 +167,8 @@ class IdAccessorRegistryTest extends TestCase
     public function testSettingEntityIdWithoutRegisteringGetter()
     {
         $this->expectException(OrmException::class);
-        $entity = $this->getMockBuilder(User::class)
-                       ->disableOriginalConstructor()
-                       ->setMockClassName("Foo")
-                       ->getMock()
-        ;
+        $entity = new Bar();
+
         $this->registry->setEntityId($entity, 24);
     }
 

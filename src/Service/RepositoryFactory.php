@@ -247,13 +247,13 @@ class RepositoryFactory
             return $this->connection;
         }
 
-        if (!isset($this->connections[CsvDataGateway::class]) && isset($this->config['dataPath'])) {
+        if (!isset($this->connections[CsvDataGateway::class]) && !empty($this->config['dataPath'])) {
             $this->connections[CsvDataGateway::class] = new CsvDataGateway(
                 JPATH_ROOT . '/' . $this->config['dataPath']
             );
         }
 
-        if (!isset($this->connections[Connection::class]) && isset($this->config['databaseUrl'])) {
+        if (!isset($this->connections[Connection::class]) && !empty($this->config['databaseUrl'])) {
             $databaseUrl = $this->config['databaseUrl'];
             $url         = parse_url($databaseUrl);
 

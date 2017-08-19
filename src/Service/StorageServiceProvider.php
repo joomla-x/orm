@@ -26,6 +26,21 @@ use Psr\Container\ContainerInterface;
 class StorageServiceProvider implements ServiceProviderInterface
 {
     /**
+     * @var string
+     */
+    private $configFile;
+
+    /**
+     * StorageServiceProvider constructor.
+     *
+     * @param $configFile
+     */
+    public function __construct($configFile)
+    {
+        $this->configFile = $configFile;
+    }
+
+    /**
      * Registers a RepositoryFactory with the container
      *
      * @param   Container $container The DI container
@@ -51,7 +66,7 @@ class StorageServiceProvider implements ServiceProviderInterface
      */
     public function createRepositoryFactory(ContainerInterface $container)
     {
-        $config = parse_ini_file(JPATH_ROOT . '/config/database.ini', true);
+        $config     = parse_ini_file($this->configFile, true);
 
         $configuration = new Configuration;
 
