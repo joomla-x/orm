@@ -1,3 +1,4 @@
 /tests/data
 !/tests/data/original
 !/tests/data/entities.*.ini
+/build/

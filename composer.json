@@ -33,5 +33,10 @@
     "psr-4": {
       "Joomla\\ORM\\Tests\\": "tests/"
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-1.0-dev": "1.0-dev"
+    }
   }
 }
