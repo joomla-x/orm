@@ -7,7 +7,7 @@ The Joomla! **ORM** package provides a storage access abstraction using reposito
 Simply run the following from the command line in your project's root directory (where your `composer.json` file is):
 
 ```sh
-composer require joomla-x/0rm:dev-master
+composer require joomla-x/orm:dev-master
 ```
 ## Contributing
 
