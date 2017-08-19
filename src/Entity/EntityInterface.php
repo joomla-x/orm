@@ -38,7 +38,7 @@ interface EntityInterface
      *
      * @return  void
      */
-    public function bind(Array $data);
+    public function bind(array $data);
 
     /**
      * Make the entity readonly.

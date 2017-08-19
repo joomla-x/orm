@@ -364,7 +364,10 @@ class EntityBuilder
 
         $this->setIdAccessors($definition->class, $entity->key());
 
-        $this->getDispatcher()->dispatch('onDefinitionCreated', new DefinitionCreatedEvent($definition->class, $definition, $this));
+        $this->getDispatcher()->dispatch(
+            'onDefinitionCreated',
+            new DefinitionCreatedEvent($definition->class, $definition, $this)
+        );
 
         return $definition->class;
     }

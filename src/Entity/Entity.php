@@ -44,7 +44,7 @@ class Entity implements EntityInterface
      *
      * @return  void
      */
-    public function bind(Array $data)
+    public function bind(array $data)
     {
         foreach ($data as $property => $value) {
             if ($this->has($property)) {
