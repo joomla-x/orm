@@ -13,6 +13,11 @@
   ],
   "homepage": "https://github.com/joomla-x/orm",
   "license": "GPL-2.0+",
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    }
+  },
   "require": {
     "doctrine/dbal": "^2.5.5",
     "joomla/string": "^1.4",
@@ -27,7 +32,7 @@
   },
   "autoload": {
     "psr-4": {
-            "Joomla\\ORM\\": "src/"
+      "Joomla\\ORM\\": "src/"
     }
   },
   "autoload-dev": {
