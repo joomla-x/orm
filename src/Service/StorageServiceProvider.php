@@ -37,7 +37,7 @@ class StorageServiceProvider implements ServiceProviderInterface
      */
     public function __construct($configFile = null)
     {
-        $this->configFile = $configFile ?: JPATH_ROOT . '/config/database.ini';
+        $this->configFile = $configFile;
     }
 
     /**
@@ -66,7 +66,11 @@ class StorageServiceProvider implements ServiceProviderInterface
      */
     public function createRepositoryFactory(ContainerInterface $container)
     {
-        $config     = parse_ini_file($this->configFile, true);
+        if (empty($this->configFile)) {
+            $this->configFile = $container->get('ConfigDirectory') . '/config/database.ini';
+        }
+
+        $config = parse_ini_file($this->configFile, true);
 
         $configuration = new Configuration;
 
