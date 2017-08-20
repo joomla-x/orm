@@ -35,9 +35,9 @@ class StorageServiceProvider implements ServiceProviderInterface
      *
      * @param $configFile
      */
-    public function __construct($configFile = 'config/database.ini')
+    public function __construct($configFile = null)
     {
-        $this->configFile = $configFile;
+        $this->configFile = $configFile ?: JPATH_ROOT . '/config/database.ini';
     }
 
     /**
