@@ -35,7 +35,7 @@ class StorageServiceProvider implements ServiceProviderInterface
      *
      * @param $configFile
      */
-    public function __construct($configFile)
+    public function __construct($configFile = 'config/database.ini')
     {
         $this->configFile = $configFile;
     }
