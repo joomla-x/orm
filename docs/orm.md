@@ -152,11 +152,9 @@ They are located in
   - `tests/Storage/StorageTestCases.php`,
     which is extended by `CsvStorageTest` and `DoctrineStorageTest`,
   - `tests/Storage/RelationTestCases.php`,
-    extended by `CsvRelationTest` and `DoctrineRelationTest`, 
+    extended by `CsvRelationTest` and `DoctrineRelationTest`, and
   - `tests/Storage/DataMapperTestCases.php`,
-    extended by `CsvDataMapperTest` and `DoctrineDataMapperTest`, and
-  - `tests/Storage/RelationTestCases.php`,
-    extended by `CsvRelationTest` and `DoctrineRelationTest`.
+    extended by `CsvDataMapperTest` and `DoctrineDataMapperTest`.
 
 This way, all tests are run for all data mappers, ensuring identical behaviour.
 
