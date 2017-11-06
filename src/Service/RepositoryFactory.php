@@ -161,6 +161,53 @@ class RepositoryFactory
     }
 
     /**
+     * Gets the schema manager
+     *
+     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|null
+     */
+    public function getSchemaManager()
+    {
+        if (method_exists($this->connection, 'getSchemaManager')) {
+            return $this->connection->getSchemaManager();
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets the connection
+     *
+     * @param   string $type Class name of the connection
+     *
+     * @return  \Doctrine\DBAL\Connection|CsvDataGateway
+     */
+    public function getConnection($type = null)
+    {
+        if (is_null($type)) {
+            return $this->connection;
+        }
+
+        if (!isset($this->connections[CsvDataGateway::class]) && !empty($this->config['dataPath'])) {
+            $this->connections[CsvDataGateway::class] = new CsvDataGateway(
+                JPATH_ROOT . '/' . $this->config['dataPath']
+            );
+        }
+
+        if (!isset($this->connections[Connection::class]) && !empty($this->config['databaseUrl'])) {
+            $databaseUrl = $this->config['databaseUrl'];
+            $url         = parse_url($databaseUrl);
+
+            if ($url['schema'] == 'sqlite') {
+                $databaseUrl = str_replace('sqlite://', 'sqlite://' . JPATH_ROOT, $databaseUrl);
+            }
+
+            $this->connections[Connection::class] = DriverManager::getConnection(['url' => $databaseUrl]);
+        }
+
+        return $this->connections[$type];
+    }
+
+    /**
      * Creates an EntityBuilder
      *
      * @param   string $dataDirectory The data directory
@@ -218,52 +265,5 @@ class RepositoryFactory
         }
 
         return $dataMapper;
-    }
-
-    /**
-     * Gets the schema manager
-     *
-     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager|null
-     */
-    public function getSchemaManager()
-    {
-        if (method_exists($this->connection, 'getSchemaManager')) {
-            return $this->connection->getSchemaManager();
-        }
-
-        return null;
-    }
-
-    /**
-     * Gets the connection
-     *
-     * @param   string $type Class name of the connection
-     *
-     * @return  \Doctrine\DBAL\Connection|CsvDataGateway
-     */
-    public function getConnection($type = null)
-    {
-        if (is_null($type)) {
-            return $this->connection;
-        }
-
-        if (!isset($this->connections[CsvDataGateway::class]) && !empty($this->config['dataPath'])) {
-            $this->connections[CsvDataGateway::class] = new CsvDataGateway(
-                JPATH_ROOT . '/' . $this->config['dataPath']
-            );
-        }
-
-        if (!isset($this->connections[Connection::class]) && !empty($this->config['databaseUrl'])) {
-            $databaseUrl = $this->config['databaseUrl'];
-            $url         = parse_url($databaseUrl);
-
-            if ($url['schema'] == 'sqlite') {
-                $databaseUrl = str_replace('sqlite://', 'sqlite://' . JPATH_ROOT, $databaseUrl);
-            }
-
-            $this->connections[Connection::class] = DriverManager::getConnection(['url' => $databaseUrl]);
-        }
-
-        return $this->connections[$type];
     }
 }

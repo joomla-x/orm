@@ -28,3 +28,4 @@ on how to contribute to the Framework's development.
       that are specific to certain field types. See [this StackOverflow answer](https://stackoverflow.com/questions/27878402/how-to-make-type-depend-on-attribute-value-using-conditional-type-assignment#answer-27880329) for more information.
 - [ ] Apply validation according to definition in `EntityBuilder::castToEntity()`
 - [ ] Use entity name instead of table name in `EntityBuilder::resolveHasManyThrough()`
+- [ ] Add `__call()` method to Repository to proxy any `get*()` methods from the DataMappers
