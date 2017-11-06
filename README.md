@@ -2,6 +2,8 @@
 
 The Joomla! **ORM** package provides a storage access abstraction using repositories for your application.
 
+**This package is in a pre-alpha state; use it to get familiar with it and to improve it, but do not use it in production, unless you really know what you are doing.**
+
 ## Installation via Composer
 
 Simply run the following from the command line in your project's root directory (where your `composer.json` file is):
