@@ -293,17 +293,6 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 - `label` (optional): The label for the related entities.
 - `description` (optional): The description for the related entities.
 
-## ToDo
-
-- [ ] Implement handling of entity role
-    - [x] Don't create reverse relations for `lookup` tables
-- [ ] Implement fieldset handling
-- [ ] Implement belongsToMany handling
-    - [x] ... on installation
-- [ ] Move Entity DTD to a Joomla repository when it is stable enough
-- [ ] Replace DTD with XMLSchema, so `<xs:alternative test="@type=string">` can be used to specify attributes
-      that are specific to certain field types. See [this StackOverflow answer](https://stackoverflow.com/questions/27878402/how-to-make-type-depend-on-attribute-value-using-conditional-type-assignment#answer-27880329) for more information.
-
 ## Resources
 
 - [Entity DTD](https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd)

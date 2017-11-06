@@ -1,24 +1,24 @@
-# Reworking of the ORM
+# The Joomla ORM
 
-This PR provides a slightly different implementation of the ORM. The original version had the drawback, that it was not easily possible to inject different data sources (especially needed for testing).
+The Joomla! **ORM** package provides a storage access abstraction using repositories for your application.
 
-Another important difference is, that entities can be plain objects. No interface needs to be implemented.
+Entities can be plain objects. No interface needs to be implemented.
 
 ## RepositoryFactory
 
-The programmatic entry-point to the ORM is the `RepositoryFactory`. It manages the creation of all necessary ORM internal dependancies. The factory is usually provided by the `StorageServiceProvider` with the key '`Repository`'.
+The programmatic entry-point to the ORM is the `RepositoryFactory`. It manages the creation of all necessary ORM internal dependancies. The factory is usually provided by the `StorageServiceProvider` with the key '`Repository`' in a PSR compatible dependency injection container.
 
 The `RepositoryFactory` exposes one public method, `forEntity()`.
 
 ```php
-/** @var \Interop\Container\ContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity($entityClassOrAlias);
 ```
 
 You can inject a DataMapper, if you want to override the configuration settings.
 
 ```php
-/** @var \Interop\Container\ContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity($entityClassOrAlias, $dataMapper);
 ```
 
@@ -27,11 +27,11 @@ $repository = $container->get('Repository')->forEntity($entityClassOrAlias, $dat
 A `Repository` is created by the `RepositoryFactory`. It should not be instantiated directly outside the ORM, because that could do harm to the referential integrity.
 
 ```php
-/** @var \Interop\Container\ContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity(Article::class);
 ```
 
-The interface has changed a bit:
+The interface for a Repository is:
 
 ```php
 interface RepositoryInterface
@@ -48,7 +48,8 @@ interface RepositoryInterface
 ```
 
 `commit()` is a proxy to the `UnitOfWork`.
-Since the repository is used as a collection in relations, the `restrictTo()` method is used preset conditions, so access is restricted to related entities.
+
+Since the repository is used as a collection in relations, the `restrictTo()` method is used to preset conditions, so access is restricted to related entities.
 
 ## DataMapper
 
@@ -128,14 +129,35 @@ This way, all tests are run for all data mappers, ensuring identical behaviour.
 
 ### Test Data
 
-The test data is provided in `tests/unit/ORM/data/original`. To create an accessible copy for the tests for both CSV and SQLite, just run
+The test data is provided in `tests/unit/ORM/data/original`. An accessible copy for the tests for both CSV and SQLite are created automatically on each run of PHPUnit.
+
+### Run the tests
+
+To run the tests, just call PHPUnit:
 
 ```bash
-$ ./libraries/vendor/bin/robo create:testdata
+$ ./vendor/bin/phpunit
 ```
 
-When running tests using `robo`, the test data is (re)created automatically.
+You'll see this output (as of Nov 2017):
 
-```bash
-$ ./libraries/vendor/bin/robo test
+```
+Copying sqlite.test.db
+Copying articles.csv
+Copying details.csv
+Copying extras.csv
+Copying maps.csv
+Copying masters.csv
+Copying tags.csv
+Copying users.csv
+PHPUnit 6.3.0 by Sebastian Bergmann and contributors.
+
+...............................................................  63 / 189 ( 33%)
+............................................................... 126 / 189 ( 66%)
+............................................................... 189 / 189 (100%)
+
+
+Time: 13.32 seconds, Memory: 14.00MB
+
+OK (189 tests, 338 assertions)
 ```

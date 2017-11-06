@@ -29,7 +29,7 @@ It contains all supported types of relations.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
+$master     = $repository->getById(42);
 ```
 
 The `Master` record is read from the database, and a `Master` object is created and populated with the data.
@@ -39,7 +39,7 @@ The `Master` record is read from the database, and a `Master` object is created 
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = new Master(...);
+$master     = new Master(...);
 $repository->add($master);
 ```
 
@@ -49,8 +49,8 @@ The object is registered by the ORM, so its changes are tracked internally, and 
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
+$repository     = $container->get('Repository')->forEntity('Master'); 
+$master         = $repository->getById(42);
 $master->fieldA = 'foo';
 ```
 
@@ -61,7 +61,7 @@ The system will detect the change and save the `Master`.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
+$master     = $repository->getById(42);
 $repository->remove($master);
 ```
 
@@ -72,9 +72,10 @@ The system will remove the object and delete the `Master` on disk.
 There are four different kinds of relations, that have to be supported by the ORM.
 
   - A `Master` can have multiple `Detail`s: **hasMany** (one to many)
-  - `Master`s have many `Tag`s through a `Map`: **hasManyThrough** (many to many)
   - A `Detail` has one `Extra`. **hasOne** (one to one)
   - Many `Detail`s belong to a `Master`: **belongsTo** (many to one)
+  - `Master`s have many `Tag`s through a `Map`: **hasManyThrough** (many to many)
+  - `Master`s have many `Tag`s without a `Map`: **belongsToMany** (many to many)
 
 To further clarify which way around the associations are defined in the models: If the table of the model contains the foreign key (other_model_id), the relation type in this model is always a `Model` **belongsTo** `OtherModel` relation!
 
@@ -119,7 +120,7 @@ Example: A `Detail` has one `Extra`.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(42);
+$detail     = $repository->getById(42);
 ```
 
 The `Detail` record is read from the database, and a `Detail` object is created and populated with the data. The virtual `extra` property is populated with an `Extra` object (if existent).
@@ -128,9 +129,9 @@ The `Detail` record is read from the database, and a `Detail` object is created 
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(42);
-$extra = new Extra(...);
+$repository    = $container->get('Repository')->forEntity('Detail'); 
+$detail        = $repository->getById(42);
+$extra         = new Extra(...);
 $detail->extra = $extra;
 ```
 
@@ -140,8 +141,8 @@ Since the `Detail` was fetched using the Repository, the object is known to the 
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(42);
+$repository          = $container->get('Repository')->forEntity('Detail'); 
+$detail              = $repository->getById(42);
 $detail->extra->info = 'Changed information';
 ```
 
@@ -151,13 +152,13 @@ The system will detect the change and save just the `Extra`.
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(42);
+$repository    = $container->get('Repository')->forEntity('Detail'); 
+$detail        = $repository->getById(42);
 $detail->extra = null; // or unset($detail->extra)
 ```
 
 The system will detect the change and delete the `Extra`.
-When a `Detail` is deleted, the associated `Extra` (if existant) will be deleted as well.
+When a `Detail` is deleted, the associated `Extra` (if existent) will be deleted as well.
 
 ### hasMany
 
@@ -198,7 +199,7 @@ Example: A `Master` can have multiple `Detail`s.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
+$master     = $repository->getById(42);
 ```
 
 The `Master` record is read from the database, and a `Master` object is created and populated with the data. The virtual `details` property is populated with a Repository for `Detail` objects, instead of the related `Detail`s themselves. The repository gives access to the related objects and allows all kind of filtering.
@@ -208,8 +209,8 @@ The `Master` record is read from the database, and a `Master` object is created 
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
-$detail = new Detail(...);
+$master     = $repository->getById(42);
+$detail     = new Detail(...);
 $master->details->add($detail);
 ```
 
@@ -219,9 +220,9 @@ The system will store the `Detail` automatically.
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Master'); 
-$user = $repository->getById(42);
-$detail = $master->details->findOne()->with(...)->getItem();
+$repository      = $container->get('Repository')->forEntity('Master'); 
+$user            = $repository->getById(42);
+$detail          = $master->details->findOne()->with(...)->getItem();
 $detail->field_1 = 'Changed content';
 ```
 
@@ -232,8 +233,8 @@ The system will detect the change and save just the `Detail`.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(42);
-$detail = $master->details->findOne()->with(...)->getItem();
+$master     = $repository->getById(42);
+$detail     = $master->details->findOne()->with(...)->getItem();
 $master→details->remove($detail);
 ```
 
@@ -278,7 +279,7 @@ Example: Many `Detail`s belong to a `Master`.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(23);
+$detail     = $repository->getById(23);
 ```
 
 The `Detail` record is read from the database, and a `Detail` object is created and populated with the data. The virtual `master` property is populated, and will contain a `Master` object.
@@ -287,9 +288,9 @@ The `Detail` record is read from the database, and a `Detail` object is created 
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(23);
-$master = new Master(...);
+$repository     = $container->get('Repository')->forEntity('Detail'); 
+$detail         = $repository->getById(23);
+$master         = new Master(...);
 $detail->master = $master;
 ```
 
@@ -299,8 +300,8 @@ The system will detect the change, create the `Master` and update the foreign ke
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(23);
+$repository              = $container->get('Repository')->forEntity('Detail'); 
+$detail                  = $repository->getById(23);
 $detail->master->field_a = 'Changed data';
 ```
 
@@ -310,8 +311,8 @@ The system will detect the change and save the `Master`.
 
 ```php
 /** @var InteropContainerContainerInterface $container */
-$repository = $container->get('Repository')->forEntity('Detail'); 
-$detail = $repository->getById(23);
+$repository     = $container->get('Repository')->forEntity('Detail'); 
+$detail         = $repository->getById(23);
 $detail->master = null; // or unset($detail->master);
 ```
 
@@ -364,7 +365,7 @@ Example: `Master`s have many `Tag`s through a `Map`.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(23);
+$master     = $repository->getById(23);
 ```
 
 The `Master` record is read from the database, and a `Master` object is created and populated with the data. The virtual `tags` property is populated with a Repository for `Tag` objects, instead of the related tags themselves. The repository gives access to the objects and allows all kind of filtering.
@@ -374,8 +375,8 @@ The `Master` record is read from the database, and a `Master` object is created 
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(23);
-$tag  = new Tag(...);
+$master     = $repository->getById(23);
+$tag        = new Tag(...);
 $master->tags->add($tag);
 ```
 
@@ -386,9 +387,9 @@ The system will store the `Tag` automatically.
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(23);
-$tag  = $master->tags->getByTag('Old Label');
-$tag->tag = 'Changed Label';
+$master     = $repository->getById(23);
+$tag        = $master->tags->getByTag('Old Label');
+$tag->tag   = 'Changed Label';
 ```
 
 The system will detect the change and save just the `Tag`. After this action, all `Master`s associated with the `Tag` 'Old Label' will show 'Changed Label'.
@@ -398,9 +399,37 @@ The system will detect the change and save just the `Tag`. After this action, al
 ```php
 /** @var InteropContainerContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
-$master = $repository->getById(23);
-$tag  = $master->tags->getByTag('Old Label');
+$master     = $repository->getById(23);
+$tag        = $master->tags->getByTag('Old Label');
 $master->tags->remove($tag);
 ```
 
 The system will detect the change and delete the entry in the `Map`. The `Tag` itself will not be affected.
+
+### belongsToMany
+
+Example: `Master`s have many `Tag`s.
+
+```xml
+<!-- Master.xml -->
+    <relations>
+        <belongsToMany
+            name="tags"
+            entity="Tag"
+            reference="tag_ids"
+        />
+    </relations>
+```
+
+- `name`: The name of the (virtual) field in this entity
+- `entity`: The type of the related entity
+- `reference`: The field name in this entity pointing to the related entity
+
+The `reference` column contains a list of foreign ids, separated by comma.
+
+While this type of relation does not need a map table and thus might be faster,
+it has a couple of drawbacks:
+
+- There is no reverse relation form `Tag`s to `Master`s
+- `Master`s are not searchable by `Tag`
+
