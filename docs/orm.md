@@ -51,15 +51,15 @@ The interface for a Repository is:
 ```php
 interface RepositoryInterface
 {
-	public function getById($id);
+    public function getById($id);
     public function getAll();
-	public function findOne();
-	public function findAll();
-	public function add($entity);
-	public function remove($entity);
-	public function commit();
-	public function restrictTo($lValue, $op, $rValue);
-	public function getEntityClass()
+    public function findOne();
+    public function findAll();
+    public function add($entity);
+    public function remove($entity);
+    public function commit();
+    public function restrictTo($lValue, $op, $rValue);
+    public function getEntityClass()
     public function bind($entity, array $data);
     public function createFromArray(array $row);
     public function getMeta();
@@ -77,12 +77,12 @@ The `DataMapperInterface` is similar to the `RepositoryInterface`:
 ```php
 interface DataMapperInterface
 {
-	public function getById($id);
-	public function findOne();
-	public function findAll();
-	public function insert($entity);
-	public function update($entity);
-	public function delete($entity);
+    public function getById($id);
+    public function findOne();
+    public function findAll();
+    public function insert($entity);
+    public function update($entity);
+    public function delete($entity);
 }
 ```
 
