@@ -27,7 +27,7 @@ It contains all supported types of relations.
 #### Read a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(42);
 ```
@@ -37,7 +37,7 @@ The `Master` record is read from the database, and a `Master` object is created 
 #### Create a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = new Master(...);
 $repository->add($master);
@@ -48,7 +48,7 @@ The object is registered by the ORM, so its changes are tracked internally, and 
 #### Update a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository     = $container->get('Repository')->forEntity('Master'); 
 $master         = $repository->getById(42);
 $master->fieldA = 'foo';
@@ -59,7 +59,7 @@ The system will detect the change and save the `Master`.
 #### Delete a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(42);
 $repository->remove($master);
@@ -118,7 +118,7 @@ Example: A `Detail` has one `Extra`.
 #### Read the `Extra` of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Detail'); 
 $detail     = $repository->getById(42);
 ```
@@ -128,7 +128,7 @@ The `Detail` record is read from the database, and a `Detail` object is created 
 #### Create an extra for a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository    = $container->get('Repository')->forEntity('Detail'); 
 $detail        = $repository->getById(42);
 $extra         = new Extra(...);
@@ -140,7 +140,7 @@ Since the `Detail` was fetched using the Repository, the object is known to the 
 #### Update the extra of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository          = $container->get('Repository')->forEntity('Detail'); 
 $detail              = $repository->getById(42);
 $detail->extra->info = 'Changed information';
@@ -151,7 +151,7 @@ The system will detect the change and save just the `Extra`.
 #### Delete the extra of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository    = $container->get('Repository')->forEntity('Detail'); 
 $detail        = $repository->getById(42);
 $detail->extra = null; // or unset($detail->extra)
@@ -197,7 +197,7 @@ Example: A `Master` can have multiple `Detail`s.
 #### Read the `Detail`s of a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(42);
 ```
@@ -207,7 +207,7 @@ The `Master` record is read from the database, and a `Master` object is created 
 #### Create a `Detail` for a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(42);
 $detail     = new Detail(...);
@@ -219,7 +219,7 @@ The system will store the `Detail` automatically.
 #### Update a `Detail` of a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository      = $container->get('Repository')->forEntity('Master'); 
 $user            = $repository->getById(42);
 $detail          = $master->details->findOne()->with(...)->getItem();
@@ -231,7 +231,7 @@ The system will detect the change and save just the `Detail`.
 #### Delete a `Detail` of a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(42);
 $detail     = $master->details->findOne()->with(...)->getItem();
@@ -277,7 +277,7 @@ Example: Many `Detail`s belong to a `Master`.
 #### Read the `Master` of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Detail'); 
 $detail     = $repository->getById(23);
 ```
@@ -287,7 +287,7 @@ The `Detail` record is read from the database, and a `Detail` object is created 
 #### Create the `Master` of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository     = $container->get('Repository')->forEntity('Detail'); 
 $detail         = $repository->getById(23);
 $master         = new Master(...);
@@ -299,7 +299,7 @@ The system will detect the change, create the `Master` and update the foreign ke
 #### Update the `Master` of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository              = $container->get('Repository')->forEntity('Detail'); 
 $detail                  = $repository->getById(23);
 $detail->master->field_a = 'Changed data';
@@ -310,7 +310,7 @@ The system will detect the change and save the `Master`.
 #### Delete the `Master` of a `Detail`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository     = $container->get('Repository')->forEntity('Detail'); 
 $detail         = $repository->getById(23);
 $detail->master = null; // or unset($detail->master);
@@ -363,7 +363,7 @@ Example: `Master`s have many `Tag`s through a `Map`.
 #### Read the `Tag`s of a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(23);
 ```
@@ -373,7 +373,7 @@ The `Master` record is read from the database, and a `Master` object is created 
 #### Create a `Tag` for a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(23);
 $tag        = new Tag(...);
@@ -385,7 +385,7 @@ The system will store the `Tag` automatically.
 #### Update a `Tag` for a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(23);
 $tag        = $master->tags->getByTag('Old Label');
@@ -397,7 +397,7 @@ The system will detect the change and save just the `Tag`. After this action, al
 #### Delete a `Tag` for a `Master`
 
 ```php
-/** @var InteropContainerContainerInterface $container */
+/** @var \Psr\Container\ContainerInterface $container */
 $repository = $container->get('Repository')->forEntity('Master'); 
 $master     = $repository->getById(23);
 $tag        = $master->tags->getByTag('Old Label');
