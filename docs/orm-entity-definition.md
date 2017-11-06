@@ -37,23 +37,25 @@ Storage defines how the entity is persisted.
 
 ```xml
 <storage>
-    <default table="..."/>
+    <default table="..." handler="..."/>
 </storage>
 ```
 
 The default storage uses the persistence layer defined in the system, usually a RDBMS like MySQL.
 
 - `table` (required): The name of the database table (without prefix).
+- `handler` (optional): The DataMapper class handling the object mapping and storage.
 
 #### CSV
 
 ```xml
 <storage>
-    <csv file="..."/>
+    <csv file="..." handler="..."/>
 </storage>
 ```
 
 - `file` (required): The name of the data file.
+- `handler` (optional): The DataMapper class handling the object mapping and storage.
 
 #### API
 
@@ -70,11 +72,12 @@ The default storage uses the persistence layer defined in the system, usually a 
 
 ```xml
 <storage>
-    <special dsn="..."/>
+    <special dsn="..." handler="..."/>
 </storage>
 ```
 
 - `dsn` (required): The DSN of the storage service.
+- `handler` (optional): The DataMapper class handling the object mapping and storage.
 
 ### Fields
 

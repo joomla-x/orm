@@ -29,3 +29,4 @@ on how to contribute to the Framework's development.
 - [ ] Apply validation according to definition in `EntityBuilder::castToEntity()`
 - [ ] Use entity name instead of table name in `EntityBuilder::resolveHasManyThrough()`
 - [ ] Add `__call()` method to Repository to proxy any `get*()` methods from the DataMappers
+- [ ] Implement handler selection according to entity definition
