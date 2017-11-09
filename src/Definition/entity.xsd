@@ -1,227 +1,228 @@
-<schema
-    xmlns='http://www.w3.org/2000/10/XMLSchema'
-    targetNamespace='http://www.w3.org/namespace/'
-    xmlns:t='http://www.w3.org/namespace/'>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           targetNamespace="https://raw.githubusercontent.com"
+           xmlns="https://raw.githubusercontent.com">
 
-    <element name='entity'>
-        <complexType>
-            <sequence>
-                <sequence minOccurs='0' maxOccurs='1'>
-                    <element ref='t:storage'/>
-                </sequence>
-                <element ref='t:fields'/>
-                <sequence minOccurs='0' maxOccurs='1'>
-                    <element ref='t:relations'/>
-                </sequence>
-            </sequence>
-            <attribute name='name' type='string' use='required'/>
-            <attribute name='role' use='default' value='default'>
-                <simpleType>
-                    <restriction base='string'>
-                        <enumeration value='primary'/>
-                        <enumeration value='lookup'/>
-                        <enumeration value='map'/>
-                        <enumeration value='inline'/>
-                        <enumeration value='default'/>
-                    </restriction>
-                </simpleType>
-            </attribute>
-        </complexType>
-    </element>
+    <xs:element name='entity'>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:sequence minOccurs='0' maxOccurs='1'>
+                    <xs:element ref='t:storage'/>
+                </xs:sequence>
+                <xs:element ref='t:fields'/>
+                <xs:sequence minOccurs='0' maxOccurs='1'>
+                    <xs:element ref='t:relations'/>
+                </xs:sequence>
+            </xs:sequence>
+            <xs:attribute name='name' type='string' use='required'/>
+            <xs:attribute name='role' use='default' value='default'>
+                <xs:simpleType>
+                    <xs:restriction base='string'>
+                        <xs:enumeration value='primary'/>
+                        <xs:enumeration value='lookup'/>
+                        <xs:enumeration value='map'/>
+                        <xs:enumeration value='inline'/>
+                        <xs:enumeration value='default'/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='storage'>
-        <complexType>
-            <choice>
-                <element ref='t:default'/>
-                <element ref='t:csv'/>
-                <element ref='t:api'/>
-                <element ref='t:special'/>
-            </choice>
-        </complexType>
-    </element>
+    <xs:element name='storage'>
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref='t:default'/>
+                <xs:element ref='t:csv'/>
+                <xs:element ref='t:api'/>
+                <xs:element ref='t:special'/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='default'>
-        <complexType>
-            <attribute name='table' type='NMTOKEN' use='required'/>
-            <attribute name='handler' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='default'>
+        <xs:complexType>
+            <xs:attribute name='table' type='NMTOKEN' use='required'/>
+            <xs:attribute name='handler' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='api'>
-        <complexType>
-            <attribute name='base-url' type='string' use='optional'/>
-            <attribute name='handler' type='string' use='required'/>
-        </complexType>
-    </element>
+    <xs:element name='api'>
+        <xs:complexType>
+            <xs:attribute name='base-url' type='string' use='optional'/>
+            <xs:attribute name='handler' type='string' use='required'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='csv'>
-        <complexType>
-            <attribute name='file' type='string' use='required'/>
-            <attribute name='handler' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='csv'>
+        <xs:complexType>
+            <xs:attribute name='file' type='string' use='required'/>
+            <xs:attribute name='handler' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='special'>
-        <complexType>
-            <attribute name='dsn' type='string' use='required'/>
-            <attribute name='handler' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='special'>
+        <xs:complexType>
+            <xs:attribute name='dsn' type='string' use='required'/>
+            <xs:attribute name='handler' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='fields'>
-        <complexType>
-            <choice maxOccurs='unbounded'>
-                <element ref='t:field'/>
-                <element ref='t:fieldset'/>
-            </choice>
-        </complexType>
-    </element>
+    <xs:element name='fields'>
+        <xs:complexType>
+            <xs:choice maxOccurs='unbounded'>
+                <xs:element ref='t:field'/>
+                <xs:element ref='t:fieldset'/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='fieldset'>
-        <complexType>
-            <choice>
-                <sequence maxOccurs='unbounded'>
-                    <element ref='t:field'/>
-                </sequence>
-                <sequence maxOccurs='unbounded'>
-                    <element ref='t:case'/>
-                </sequence>
-            </choice>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='type' type='NMTOKEN' use='required'/>
-            <attribute name='entity' type='string' use='optional'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='fieldset'>
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence maxOccurs='unbounded'>
+                    <xs:element ref='t:field'/>
+                </xs:sequence>
+                <xs:sequence maxOccurs='unbounded'>
+                    <xs:element ref='t:case'/>
+                </xs:sequence>
+            </xs:choice>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='type' type='NMTOKEN' use='required'/>
+            <xs:attribute name='entity' type='string' use='optional'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='field'>
-        <complexType>
-            <choice minOccurs='0' maxOccurs='unbounded'>
-                <element ref='t:validation'/>
-                <element ref='t:option'/>
-            </choice>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='type' type='NMTOKEN' use='required'/>
-            <attribute name='size' type='string' use='optional'/>
-            <attribute name='input' type='NMTOKEN' use='optional'/>
-            <attribute name='default' type='string' use='optional'/>
-            <attribute name='entity' type='NMTOKEN' use='optional'/>
-            <attribute name='filter' type='string' use='optional'/>
-            <attribute name='readonly' use='default' value='false'>
-                <simpleType>
-                    <restriction base='string'>
-                        <enumeration value='true'/>
-                        <enumeration value='false'/>
-                    </restriction>
-                </simpleType>
-            </attribute>
-            <attribute name='multiple' use='default' value='false'>
-                <simpleType>
-                    <restriction base='string'>
-                        <enumeration value='true'/>
-                        <enumeration value='false'/>
-                    </restriction>
-                </simpleType>
-            </attribute>
-            <attribute name='required' use='default' value='false'>
-                <simpleType>
-                    <restriction base='string'>
-                        <enumeration value='true'/>
-                        <enumeration value='false'/>
-                    </restriction>
-                </simpleType>
-            </attribute>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-            <attribute name='hint' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='field'>
+        <xs:complexType>
+            <xs:choice minOccurs='0' maxOccurs='unbounded'>
+                <xs:element ref='t:validation'/>
+                <xs:element ref='t:option'/>
+            </xs:choice>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='type' type='NMTOKEN' use='required'/>
+            <xs:attribute name='size' type='string' use='optional'/>
+            <xs:attribute name='input' type='NMTOKEN' use='optional'/>
+            <xs:attribute name='default' type='string' use='optional'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='optional'/>
+            <xs:attribute name='filter' type='string' use='optional'/>
+            <xs:attribute name='readonly' use='default' value='false'>
+                <xs:simpleType>
+                    <xs:restriction base='string'>
+                        <xs:enumeration value='true'/>
+                        <xs:enumeration value='false'/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name='multiple' use='default' value='false'>
+                <xs:simpleType>
+                    <xs:restriction base='string'>
+                        <xs:enumeration value='true'/>
+                        <xs:enumeration value='false'/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name='required' use='default' value='false'>
+                <xs:simpleType>
+                    <xs:restriction base='string'>
+                        <xs:enumeration value='true'/>
+                        <xs:enumeration value='false'/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+            <xs:attribute name='hint' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='validation'>
-        <complexType>
-            <attribute name='rule' type='NMTOKEN' use='required'/>
-            <attribute name='value' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='validation'>
+        <xs:complexType>
+            <xs:attribute name='rule' type='NMTOKEN' use='required'/>
+            <xs:attribute name='value' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='option'>
-        <complexType mixed='true'>
-            <sequence maxOccurs='unbounded'>
-            </sequence>
-            <attribute name='value' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='option'>
+        <xs:complexType mixed='true'>
+            <xs:sequence maxOccurs='unbounded'>
+            </xs:sequence>
+            <xs:attribute name='value' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='case'>
-        <complexType>
-            <attribute name='field' type='IDREF' use='required'/>
-            <attribute name='value' type='string' use='required'/>
-            <attribute name='use' type='string' use='required'/>
-        </complexType>
-    </element>
+    <xs:element name='case'>
+        <xs:complexType>
+            <xs:attribute name='field' type='IDREF' use='required'/>
+            <xs:attribute name='value' type='string' use='required'/>
+            <xs:attribute name='use' type='string' use='required'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='relations'>
-        <complexType>
-            <choice minOccurs='0' maxOccurs='unbounded'>
-                <element ref='t:belongsTo'/>
-                <element ref='t:belongsToMany'/>
-                <element ref='t:hasOne'/>
-                <element ref='t:hasMany'/>
-                <element ref='t:hasManyThrough'/>
-            </choice>
-        </complexType>
-    </element>
+    <xs:element name='relations'>
+        <xs:complexType>
+            <xs:choice minOccurs='0' maxOccurs='unbounded'>
+                <xs:element ref='t:belongsTo'/>
+                <xs:element ref='t:belongsToMany'/>
+                <xs:element ref='t:hasOne'/>
+                <xs:element ref='t:hasMany'/>
+                <xs:element ref='t:hasManyThrough'/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='belongsTo'>
-        <complexType>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='entity' type='NMTOKEN' use='required'/>
-            <attribute name='reference' type='IDREF' use='required'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='belongsTo'>
+        <xs:complexType>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='required'/>
+            <xs:attribute name='reference' type='IDREF' use='required'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='belongsToMany'>
-        <complexType>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='entity' type='NMTOKEN' use='required'/>
-            <attribute name='reference' type='IDREF' use='required'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='belongsToMany'>
+        <xs:complexType>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='required'/>
+            <xs:attribute name='reference' type='IDREF' use='required'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='hasOne'>
-        <complexType>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='entity' type='NMTOKEN' use='required'/>
-            <attribute name='reference' type='NMTOKEN' use='required'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='hasOne'>
+        <xs:complexType>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='required'/>
+            <xs:attribute name='reference' type='NMTOKEN' use='required'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='hasMany'>
-        <complexType>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='entity' type='NMTOKEN' use='required'/>
-            <attribute name='reference' type='NMTOKEN' use='required'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
+    <xs:element name='hasMany'>
+        <xs:complexType>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='required'/>
+            <xs:attribute name='reference' type='NMTOKEN' use='required'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
 
-    <element name='hasManyThrough'>
-        <complexType>
-            <attribute name='name' type='ID' use='required'/>
-            <attribute name='entity' type='NMTOKEN' use='required'/>
-            <attribute name='reference' type='NMTOKEN' use='required'/>
-            <attribute name='joinTable' type='NMTOKEN' use='required'/>
-            <attribute name='joinRef' type='NMTOKEN' use='required'/>
-            <attribute name='label' type='string' use='optional'/>
-            <attribute name='description' type='string' use='optional'/>
-        </complexType>
-    </element>
-</schema>
+    <xs:element name='hasManyThrough'>
+        <xs:complexType>
+            <xs:attribute name='name' type='ID' use='required'/>
+            <xs:attribute name='entity' type='NMTOKEN' use='required'/>
+            <xs:attribute name='reference' type='NMTOKEN' use='required'/>
+            <xs:attribute name='joinTable' type='NMTOKEN' use='required'/>
+            <xs:attribute name='joinRef' type='NMTOKEN' use='required'/>
+            <xs:attribute name='label' type='string' use='optional'/>
+            <xs:attribute name='description' type='string' use='optional'/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
