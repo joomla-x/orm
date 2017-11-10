@@ -406,6 +406,7 @@ class EntityBuilder
 
         $parser->open($filename);
 
+        /** @var EntityStructure $definition */
         $definition = $parser->parse([
             'onBeforeEntity'   => [$this, 'prepareEntity'],
             'onAfterEntity'    => [$this, 'handleEntity'],

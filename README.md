@@ -21,8 +21,11 @@ on how to contribute to the Framework's development.
 - [ ] Implement handling of entity role
     - [x] Don't create reverse relations for `lookup` tables
 - [ ] Implement fieldset handling
-- [ ] Implement belongsToMany handling
-    - [x] ... on installation
+- [ ] Relation Handling
+    - [x] Implement belongsToMany handling on installation
+    - [ ] Implement handling of belongsToMany relations in UnitOfWork::checkForChangedRelations()
+    - [ ] Implement handling of hasMany relations in UnitOfWork::checkForChangedRelations()
+    - [ ] Implement handling of hasManyThrough relations in UnitOfWork::checkForChangedRelations()
 - [ ] Move Entity DTD to a Joomla repository when it is stable enough
 - [x] Replace DTD with XMLSchema, so `<xs:alternative test="@type=string">` can be used to specify attributes
       that are specific to certain field types. See [this StackOverflow answer](https://stackoverflow.com/questions/27878402/how-to-make-type-depend-on-attribute-value-using-conditional-type-assignment#answer-27880329) for more information.
