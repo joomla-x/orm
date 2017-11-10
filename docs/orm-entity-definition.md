@@ -307,7 +307,7 @@ File: [entity.xsd](https://raw.githubusercontent.com/joomla-x/orm/master/src/Def
 <entity xmlns="https://joomla.org/joomla-x/orm"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="https://joomla.org/joomla-x/orm
-                                https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.xsd"
+            https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.xsd"
         name="Your\Namespace\EntityClass">
     ...
 </entity>
