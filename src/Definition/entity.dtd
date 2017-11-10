@@ -1,3 +1,4 @@
+<!-- This DTD is deprecated - use entity.xsd instead -->
 <!ELEMENT entity ((storage)?, fields, (relations)?)>
     <!ATTLIST entity
         name CDATA #REQUIRED
@@ -8,6 +9,7 @@
     <!ELEMENT default EMPTY>
     <!ATTLIST default
         table NMTOKEN #REQUIRED
+        primary CDATA #IMPLIED
         handler CDATA #IMPLIED>
 
     <!ELEMENT api EMPTY>

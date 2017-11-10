@@ -44,6 +44,7 @@
     <xs:element name='default'>
         <xs:complexType>
             <xs:attribute name='table' type='xs:NMTOKEN' use='required'/>
+            <xs:attribute name='primary' type='xs:string' use='optional'/>
             <xs:attribute name='handler' type='xs:string' use='optional'/>
         </xs:complexType>
     </xs:element>

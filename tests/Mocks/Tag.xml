@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE entity SYSTEM
-    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
-<entity name="Joomla\ORM\Tests\Mocks\Tag">
+<entity xmlns="https://joomla.org/joomla-x/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://joomla.org/joomla-x/orm
+                                https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.xsd"
+        name="Joomla\ORM\Tests\Mocks\Tag">
 
     <storage>
         <default table="tags"/>
