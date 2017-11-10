@@ -298,5 +298,32 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 
 ## Resources
 
-- [Entity DTD](https://github.com/nibralab/joomla-architecture/blob/master/code/Joomla/ORM/Definition/entity.dtd)
+### XML Schema
 
+File: [entity.xsd](https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.xsd)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<entity xmlns="https://joomla.org/joomla-x/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://joomla.org/joomla-x/orm
+                                https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.xsd"
+        name="Your\Namespace\EntityClass">
+    ...
+</entity>
+```
+
+### Entity DTD
+
+*The entity DTD is outdated, use XML Schema instead.*
+
+File: [emtity.dtd](https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE entity SYSTEM
+    "https://raw.githubusercontent.com/joomla-x/orm/master/src/Definition/entity.dtd">
+<entity name="Your\Namespace\EntityClass">
+   ...
+</entity>
+```
