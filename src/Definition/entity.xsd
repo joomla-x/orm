@@ -1,8 +1,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
-           targetNamespace="https://joomla.org"
-           xmlns="https://joomla.org">
+           targetNamespace="https://joomla.org/joomla-x/orm"
+           xmlns="https://joomla.org/joomla-x/orm">
 
     <xs:element name='entity'>
         <xs:complexType>
@@ -16,7 +16,7 @@
                 </xs:sequence>
             </xs:sequence>
             <xs:attribute name='name' type='xs:string' use='required'/>
-            <xs:attribute name='role' use='default' value='default'>
+            <xs:attribute name='role' default='default'>
                 <xs:simpleType>
                     <xs:restriction base='xs:string'>
                         <xs:enumeration value='primary'/>
@@ -109,7 +109,7 @@
             <xs:attribute name='default' type='xs:string' use='optional'/>
             <xs:attribute name='entity' type='xs:NMTOKEN' use='optional'/>
             <xs:attribute name='filter' type='xs:string' use='optional'/>
-            <xs:attribute name='readonly' use='default' value='false'>
+            <xs:attribute name='readonly' default='false'>
                 <xs:simpleType>
                     <xs:restriction base='xs:string'>
                         <xs:enumeration value='true'/>
@@ -117,7 +117,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name='multiple' use='default' value='false'>
+            <xs:attribute name='multiple' default='false'>
                 <xs:simpleType>
                     <xs:restriction base='xs:string'>
                         <xs:enumeration value='true'/>
@@ -125,7 +125,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
-            <xs:attribute name='required' use='default' value='false'>
+            <xs:attribute name='required' default='false'>
                 <xs:simpleType>
                     <xs:restriction base='xs:string'>
                         <xs:enumeration value='true'/>
