@@ -44,7 +44,7 @@
         size CDATA #IMPLIED
         input NMTOKEN #IMPLIED
         default CDATA #IMPLIED
-        entity NMTOKEN #IMPLIED
+        entity CDATA #IMPLIED
         filter CDATA #IMPLIED
         readonly (true|false) "false"
         multiple (true|false) "false"
@@ -73,7 +73,7 @@
     <!ELEMENT belongsTo EMPTY>
     <!ATTLIST belongsTo
         name ID #REQUIRED
-        entity NMTOKEN #REQUIRED
+        entity CDATA #REQUIRED
         reference IDREF #REQUIRED
         label CDATA #IMPLIED
         description CDATA #IMPLIED>
@@ -81,7 +81,7 @@
     <!ELEMENT belongsToMany EMPTY>
     <!ATTLIST belongsToMany
         name ID #REQUIRED
-        entity NMTOKEN #REQUIRED
+        entity CDATA #REQUIRED
         reference IDREF #REQUIRED
         label CDATA #IMPLIED
         description CDATA #IMPLIED>
@@ -89,7 +89,7 @@
     <!ELEMENT hasOne EMPTY>
     <!ATTLIST hasOne
         name ID #REQUIRED
-        entity NMTOKEN #REQUIRED
+        entity CDATA #REQUIRED
         reference NMTOKEN #REQUIRED
         label CDATA #IMPLIED
         description CDATA #IMPLIED>
@@ -97,7 +97,7 @@
     <!ELEMENT hasMany EMPTY>
     <!ATTLIST hasMany
         name ID #REQUIRED
-        entity NMTOKEN #REQUIRED
+        entity CDATA #REQUIRED
         reference NMTOKEN #REQUIRED
         label CDATA #IMPLIED
         description CDATA #IMPLIED>
@@ -105,7 +105,7 @@
     <!ELEMENT hasManyThrough EMPTY>
     <!ATTLIST hasManyThrough
         name ID #REQUIRED
-        entity NMTOKEN #REQUIRED
+        entity CDATA #REQUIRED
         reference NMTOKEN #REQUIRED
         joinTable NMTOKEN #REQUIRED
         joinRef NMTOKEN #REQUIRED
