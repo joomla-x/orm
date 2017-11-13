@@ -238,9 +238,10 @@ Defines a foreign key in this entity pointing to another entity.
 <belongsTo name="..." entity="..." reference="..."/>
 ```
 
-- `name`: The name of the (virtual) field in this entity
-- `entity`: The type of the related entity
-- `reference`: The field name in this entity pointing to the related entity
+- `name`: The name of the (virtual) field in this entity.
+- `entity`: The (fully qualified) classname of the related entity.
+    If this entity can belong to different other entity types, use `entity="@field_name"` to provide the field with the entity information (either classname or `com_component.entity` format).
+- `reference`: The field name in this entity pointing to the related entity.
 - `label` (optional): The label for the related entity.
 - `description` (optional): The description for the related entity.
 
@@ -253,7 +254,7 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 ```
 
 - `name`: The name of the (virtual) field in this entity
-- `entity`: The type of the related entities
+- `entity`: The (fully qualified) classname of the related entities
 - `reference`: The field name in this entity pointing to the related entities
 - `label` (optional): The label for the related entities.
 - `description` (optional): The description for the related entities.
@@ -265,7 +266,7 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 ```
 
 - `name`: The name of the (virtual) field in this entity
-- `entity`: The type of the related entity
+- `entity`: The (fully qualified) classname of the related entity
 - `reference`: The field name in the related entity pointing to this entity
 - `label` (optional): The label for the related entity.
 - `description` (optional): The description for the related entity.
@@ -277,7 +278,7 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 ```
 
 - `name`: The name of the (virtual) field in this entity
-- `entity`: The type of the related entities
+- `entity`: The (fully qualified) classname of the related entities
 - `reference`: The field name in the related entities pointing to this entity
 - `label` (optional): The label for the related entities.
 - `description` (optional): The description for the related entities.
@@ -289,7 +290,7 @@ Defines a (comma separated) list of foreign keys in this entity pointing to othe
 ```
 
 - `name`: The name of the (virtual) field in this entity
-- `entity`: The type of the related entities
+- `entity`: The (fully qualified) classname of the related entities
 - `reference`: The field name in the map pointing to this entity
 - `joinTable`: The map containing pointers to both related entities
 - `joinRef`: The field name in the map pointing to the related entities

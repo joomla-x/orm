@@ -33,3 +33,4 @@ on how to contribute to the Framework's development.
 - [ ] Use entity name instead of table name in `EntityBuilder::resolveHasManyThrough()`
 - [ ] Add `__call()` method to Repository to proxy any `get*()` methods from the DataMappers
 - [ ] Implement handler selection according to entity definition
+- [ ] Implement `entity="@field_name"` syntax for belongsTo relations
