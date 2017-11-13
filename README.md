@@ -1,9 +1,9 @@
 # The ORM Package [![Build Status](https://travis-ci.org/joomla-x/orm.png?branch=master)](https://travis-ci.org/joomla-x/orm)
 
-[![Latest Stable Version](https://poser.pugx.org/joomla-x/orm/v/stable)](https://packagist.org/packages/joomla/di)
-[![Total Downloads](https://poser.pugx.org/joomla-x/orm/downloads)](https://packagist.org/packages/joomla/di)
-[![Latest Unstable Version](https://poser.pugx.org/joomla-x/orm/v/unstable)](https://packagist.org/packages/joomla/di)
-[![License](https://poser.pugx.org/joomla-x/orm/license)](https://packagist.org/packages/joomla/di)
+[![Latest Stable Version](https://poser.pugx.org/joomla-x/orm/v/stable)](https://packagist.org/packages/joomla-x/orm)
+[![Total Downloads](https://poser.pugx.org/joomla-x/orm/downloads)](https://packagist.org/packages/joomla-x/orm)
+[![Latest Unstable Version](https://poser.pugx.org/joomla-x/orm/v/unstable)](https://packagist.org/packages/joomla-x/orm)
+[![License](https://poser.pugx.org/joomla-x/orm/license)](https://packagist.org/packages/joomla-x/orm)
 
 The Joomla! **ORM** package provides a storage access abstraction using repositories for your application.
 
