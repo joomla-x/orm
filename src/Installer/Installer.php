@@ -72,6 +72,44 @@ class Installer
     }
 
     /**
+     * Installs an extension
+     *
+     * @param   string $source The path to the extension
+     *
+     * @return  string[]
+     */
+    public function install($source)
+    {
+        $pattern                             = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
+        $this->extensions[basename($source)] = preg_replace($pattern, '', $source);
+
+        $xmlDirectory = $source . '/entities';
+        $strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
+        $this->builder->addLocatorStrategy($strategy);
+        $entityNames = $this->importDefinition($xmlDirectory . '/*.xml');
+
+        foreach ($entityNames as $entityName) {
+            $this->dataDirectories[$entityName] = $source . '/data';
+        }
+
+        return $entityNames;
+    }
+
+    /**
+     * Finishes the installation
+     *
+     * @return  void
+     */
+    public function finish()
+    {
+        $this->resolveRelations();
+        $this->writeXmlFiles();
+        $this->createTables();
+        $this->import();
+        $this->writeExtensionIni();
+    }
+
+    /**
      * @return  void
      */
     private function loadInstalledExtensions()
@@ -85,7 +123,7 @@ class Installer
      */
     private function getExtensionIniFilename()
     {
-        return $this->container->get('ConfigDirectory') . '/config/extensions.ini';
+        return $this->container->get('ConfigDirectory') . '/extensions.ini';
     }
 
     /**
@@ -136,44 +174,6 @@ class Installer
     }
 
     /**
-     * Installs an extension
-     *
-     * @param   string $source The path to the extension
-     *
-     * @return  string[]
-     */
-    public function install($source)
-    {
-        $pattern                             = chr(1) . '^' . preg_quote(JPATH_ROOT) . '/' . chr(1);
-        $this->extensions[basename($source)] = preg_replace($pattern, '', $source);
-
-        $xmlDirectory = $source . '/entities';
-        $strategy     = new RecursiveDirectoryStrategy($xmlDirectory);
-        $this->builder->addLocatorStrategy($strategy);
-        $entityNames = $this->importDefinition($xmlDirectory . '/*.xml');
-
-        foreach ($entityNames as $entityName) {
-            $this->dataDirectories[$entityName] = $source . '/data';
-        }
-
-        return $entityNames;
-    }
-
-    /**
-     * Finishes the installation
-     *
-     * @return  void
-     */
-    public function finish()
-    {
-        $this->resolveRelations();
-        $this->writeXmlFiles();
-        $this->createTables();
-        $this->import();
-        $this->writeExtensionIni();
-    }
-
-    /**
      * Resolve all counter-relations
      *
      * @return  void
@@ -195,7 +195,12 @@ class Installer
     private function resolveBelongsTo($definition)
     {
         foreach ($definition->relations['belongsTo'] as $relation) {
-            $counterMeta = $this->entityDefinitions[$relation->entity];
+            $counterMeta = $this->getMeta($relation->entity);
+
+            if (empty($counterMeta)) {
+                // Counter entity is unknown, ignore it
+                continue;
+            }
 
             if ($counterMeta->role == 'lookup') {
                 continue;
@@ -218,7 +223,7 @@ class Installer
                 ]
             );
 
-            $this->entityDefinitions[$relation->entity]->relations['hasMany'][$hasMany->name] = $hasMany;
+            $this->entityDefinitions[$counterMeta->name]->relations['hasMany'][$hasMany->name] = $hasMany;
         }
     }
 
@@ -240,8 +245,7 @@ class Installer
     private function resolveHasOneOrMany($definition)
     {
         foreach (array_merge($definition->relations['hasMany'], $definition->relations['hasOne']) as $relation) {
-            $counterEntity    = $relation->entity;
-            $counterMeta      = $this->entityDefinitions[$counterEntity];
+            $counterMeta      = $this->getMeta($relation->entity);
             $counterRelations = $counterMeta->relations;
 
             foreach ($counterRelations['belongsTo'] as $belongsTo) {
@@ -259,7 +263,7 @@ class Installer
                 ]
             );
 
-            $this->entityDefinitions[$counterEntity]->relations['belongsTo'][$belongsTo->name] = $belongsTo;
+            $this->entityDefinitions[$counterMeta->name]->relations['belongsTo'][$belongsTo->name] = $belongsTo;
         }
     }
 
@@ -282,7 +286,7 @@ class Installer
      */
     private function writeXmlFiles()
     {
-        foreach ($this->entityDefinitions as $definition) {
+        foreach ($this->entityDefinitions as $key => $definition) {
             $definition->writeXml($this->dataDirectory . "/entities/{$definition->name}.xml");
         }
     }
@@ -413,5 +417,28 @@ class Installer
         }
 
         file_put_contents($this->getExtensionIniFilename(), $ini);
+    }
+
+    /**
+     * @param string $entity
+     *
+     * @return EntityStructure
+     */
+    private function getMeta($entity)
+    {
+        $parts  = explode('\\', $entity);
+        $entity = array_pop($parts);
+
+        if ($entity[0] == '@') {
+            // Indirect entity definition; skip
+            return null;
+        }
+
+        if (!isset($this->entityDefinitions[$entity])) {
+            // Unknown entity definition; skip
+            return null;
+        }
+
+        return $this->entityDefinitions[$entity];
     }
 }
